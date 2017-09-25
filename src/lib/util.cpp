@@ -10,8 +10,7 @@
 #include <algorithm>
 
 util::Algorithms util::GetAlgorithm(std::string algorithm_name) {
-  std::transform(algorithm_name.begin(), algorithm_name.end(),
-      algorithm_name.begin(), ::tolower);
+  StringToLower(algorithm_name);
   if (algorithm_name == "kmp") {
     return util::KMP;
   } else if (algorithm_name == "aho_corasick") {
@@ -23,4 +22,17 @@ util::Algorithms util::GetAlgorithm(std::string algorithm_name) {
   } else {
     return util::NO_ALGORITHM;
   }
+}
+
+std::pair<bool, int> util::StringToInt(const char *str) {
+  if(str[0] == '\0' || (!isdigit(str[0]) && str[0] != '-' && str[0] != '-')) {
+    return std::make_pair(false, 0);
+  }
+  char *end;
+  int ans = strtol(str, &end, 10);
+  return std::make_pair(*end == '\0', ans);
+}
+
+inline void util::StringToLower(std::string &str) {
+  std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 }

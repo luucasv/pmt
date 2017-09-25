@@ -14,10 +14,11 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <tuple>
 
 void ShowHelp(const char* name) {
   std::cerr 
-  << "Usage: " << name << " [options] pattern textfile [textfile...]\n"
+  << "Usage: " << name << " [options...] pattern textfile [textfile...]\n"
   << "       " << name << " --help\n"
   << "       " << name << " --version\n"
   << '\n'
@@ -27,6 +28,7 @@ void ShowHelp(const char* name) {
   << " -h, --help                      show this help text and exit\n"
   << " -v, --version                   show current version and exit\n"
   << '\n'
+  << "OPTIONS:\n"
   << " -e, --edit max_error            set edit error to max_error >= 0\n"
   << "                                 default is 0, and 0 means exact match\n"
   << "                                 max_error > 0 means aproximate match\n"
@@ -45,7 +47,7 @@ void ShowHelp(const char* name) {
   << "Report bugs to: <lvcs@cin.ufpe.br> or <tfg@cin.ufpe.br>\n";
 }
 
-// reads all patters in file_name (one per line) and pushes into patterns
+// read all patters in file_name (one per line) and push into patterns vector
 bool ReadPatterns(std::vector<std::string> &patterns, const char *file_name) {
   std::ifstream file(file_name);
   if (!file.good()) {
@@ -110,12 +112,9 @@ parse_args::InputArguments parse_args::ParseArgs(int argc,char * const*argv) {
 
     switch (current_option) {
       case 'e': {
-        try {
-          args.max_error = std::stoi(optarg);
-          if (args.max_error < 0) {
-            throw "Invalid error\n";
-          }
-        } catch (...) {
+        bool is_num;
+        std::tie(is_num, args.max_error) = util::StringToInt(optarg);
+        if(!is_num || args.max_error < 0) {
           std::cerr << argv[0] << ": " << optarg
                     << ": Invalid max_error value\n";
           exit(EXIT_FAILURE);

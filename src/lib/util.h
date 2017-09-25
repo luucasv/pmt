@@ -22,6 +22,8 @@ enum Algorithms {
 };
 
 Algorithms GetAlgorithm(std::string algorithm_name);
+std::pair<bool, int> StringToInt(const char *str);
+inline void StringToLower(std::string &str);
 }
 
 #endif

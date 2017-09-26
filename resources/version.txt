@@ -1,0 +1,12 @@
+pmt 0.0.1
+Copyright (c) 2017 Lucas V. da C. Santana and Tiago Figueiredo Gonçalves
+
+License: GPL: <https://www.gnu.org/licenses/gpl.html>
+This program comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions
+
+This is a project done at CIn - UFPE
+Authors: Lucas Santana <lvcs@cin.ufpe.br>
+         Tiago Gonçalves <tfg@cin.ufpe.br>
+Report bugs to: <lvcs@cin.ufpe.br> or <tfg@cin.ufpe.br>

@@ -20,8 +20,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include <iostream>
 
-#include "lib/util.h"
-#include "lib/parse_args.h"
+#include "util.h"
+#include "parse_args.h"
 
 std::ostream& operator<< (std::ostream& out,
                           const std::vector<std::string>& v) {

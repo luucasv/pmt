@@ -1,0 +1,4 @@
+Usage: pmt  [options...] pattern textfile [textfile...]
+       pmt  [options...] -p patternfile textfile [textfile...]
+       pmt  --help
+       pmt  --version

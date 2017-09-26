@@ -42,58 +42,28 @@ InputArguments::InputArguments() {
   algorithm = util::NO_ALGORITHM;
 }
 
+void PrintFile(const char *file_name) {
+  std::ifstream file(file_name);
+  string txt;
+  std::cout << file_name << ' ' << file.good() << '\n';
+  while (getline(file, txt)) {
+    std::cerr << txt << '\n';
+  }
+}
+
 // show usage message
 void ShowUsage(const char *base) {
-  std::cerr
-  << "Usage: " << base << " [options...] pattern textfile [textfile...]\n"
-  << "       " << base << " --help\n"
-  << "       " << base << " --version\n";
+  PrintFile("USAGE_FILE");
 }
 
 // show help message
 void ShowHelp(const char *base) {
   ShowUsage(base);
-  std::cerr
-  << '\n'
-  << "Search for occorencies of pattern in all textfile's\n"
-  << "Example: " << base << " church shakespeare.txt\n"
-  << '\n'
-  << " -h, --help                      show this help text and exit\n"
-  << " -v, --version                   show current version and exit\n"
-  << '\n'
-  << "OPTIONS:\n"
-  << " -e, --edit max_error            set edit error to max_error >= 0\n"
-  << "                                 default is 0, and 0 means exact match\n"
-  << "                                 max_error > 0 means aproximate match\n"
-  << " -p, --pattern patternfile       search for the patterns in patternfile\n"
-  << " -a, --algorithm algorithm_name  set algorithm to algorithm_name\n"
-  << "                                 possible names: KMP, AHO_CORASICK,\n"
-  << "                                 UKKONEN, SHIFT_OR (case is ignored)\n"
-  << "                                 KMP is default for sigle pattern\n"
-  << "                                 AHO_CORASICK for multiple pattern\n"
-  << "                                 and UKKONEN for aproximate match\n"
-  << " -c, --count                     print only count of matches per file\n"
-  << '\n'
-  << "This is a project done at CIn - UFPE\n"
-  << "Authors: Lucas Santana <lvcs@cin.ufpe.br>\n"
-  << "         Tiago Gonçalves <tfg@cin.ufpe.br>\n"
-  << "Report bugs to: <lvcs@cin.ufpe.br> or <tfg@cin.ufpe.br>\n";
+  PrintFile("HELP_FILE");
 }
 
 void ShowVersion() {
-  std::cerr
-  << "pmt 0.0.1\n"
-  << "Copyright (c) 2017 Lucas V. da C. Santana and Tiago Figueiredo Gonçalves"
-  << '\n'
-  << "License: GPL: <https://www.gnu.org/licenses/gpl.html>\n"
-  << "This program comes with ABSOLUTELY NO WARRANTY\n"
-  << "This is free software, and you are welcome to redistribute it\n"
-  << "under certain conditions\n"
-  << '\n'
-  << "This is a project done at CIn - UFPE\n"
-  << "Authors: Lucas Santana <lvcs@cin.ufpe.br>\n"
-  << "         Tiago Gonçalves <tfg@cin.ufpe.br>\n"
-  << "Report bugs to: <lvcs@cin.ufpe.br> or <tfg@cin.ufpe.br>\n";
+  PrintFile("VERSION_FILE");
 }
 
 // read all patters in file_name (one per line) and push into patterns vector

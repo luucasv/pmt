@@ -1,0 +1,24 @@
+
+Search for occorencies of pattern in all textfile's
+Example: pmt church shakespeare.txt
+
+  -h, --help                      show this help text and exit
+  -v, --version                   show current version and exit
+
+OPTIONS:
+  -e, --edit maxerror            set edit error to max_error >= 0
+                                 default is 0, and 0 means exact match
+                                 max_error > 0 means aproximate match
+  -p, --pattern patternfile      search for the patterns in patternfile
+  -a, --algorithm algorithmname  set algorithm to algorithm_name
+                                 possible names: KMP, AHO_CORASICK,
+                                 UKKONEN, SHIFT_OR (case is ignored)
+                                 KMP is default for sigle pattern
+                                 AHO_CORASICK for multiple pattern
+                                 and UKKONEN for aproximate match
+  -c, --count                    print only count of matches per file
+
+This is a project done at CIn - UFPE
+Authors: Lucas Santana <lvcs@cin.ufpe.br>
+         Tiago Gonçalves <tfg@cin.ufpe.br>
+Report bugs to: <lvcs@cin.ufpe.br> or <tfg@cin.ufpe.br>

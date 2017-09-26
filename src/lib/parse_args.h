@@ -1,17 +1,30 @@
-/* Copyright (C) Lucas Santana and Tiago Gonçalves - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Lucas Santana <lvcs@cin.ufpe.br> and
- *  Tiago Gonçalves <tfg@cin.ufpe.br>
- * September-Octuber 2017
- */
+/*
+Copyright (c) 2017 Lucas V. da C. Santana and Tiago Figueiredo Gonçalves
 
-#ifndef PMT_SRC_LIB_PARSE_ARGS_H
-#define PMT_SRC_LIB_PARSE_ARGS_H
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-#include "util.h"
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
+            Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
+*/
+
+#ifndef SRC_LIB_PARSE_ARGS_H_
+#define SRC_LIB_PARSE_ARGS_H_
+
 #include <string>
 #include <vector>
+
+#include "util.h"
 
 namespace parse_args {
 
@@ -22,15 +35,12 @@ struct InputArguments {
   util::Algorithms algorithm;
   bool count_flag;
 
-  InputArguments(){
-    max_error = 0;
-    count_flag = false;
-    algorithm = util::KMP;
-  }
+  InputArguments();
 };
-// reads all arguments 
+
+// parse all arguments
 InputArguments ParseArgs(int argc, char* const*argv);
 
-}
+}  // namespace parse_args
 
-#endif
+#endif  // SRC_LIB_PARSE_ARGS_H_

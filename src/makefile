@@ -1,19 +1,19 @@
 CXX=g++
 RM=rm -rf
 MK=mkdir
-CPPFLAGS=-std=c++11 -O2
+CPPFLAGS=-std=c++11 -O2 -Wall -Werror -Wconversion
 LDLIB=-lm
 OUTPUT_DIR=../bin
 
-SRCS=pmt.cpp lib/util.cpp lib/parse_args.cpp
-OBJS=$(subst .cpp,.o,$(SRCS))
+SRCS=pmt.cc lib/util.cc lib/parse_args.cc
+OBJS=$(subst .cc,.o,$(SRCS))
 
 all: rmdirs mkdirs pmt clean
 
 pmt: $(OBJS)
 	$(CXX) -o $(OUTPUT_DIR)/pmt $(OBJS) $(LDLIB)
 
-%.o : %.cpp
+%.o : %.cc
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 rmdirs:

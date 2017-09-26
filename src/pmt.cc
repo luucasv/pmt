@@ -18,28 +18,29 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_LIB_UTIL_H_
-#define SRC_LIB_UTIL_H_
-
-#include <string>
-#include <utility>
 #include <iostream>
 
-namespace util {
+#include "lib/util.h"
+#include "lib/parse_args.h"
 
-enum Algorithms {
-  KMP,
-  AHO_CORASICK,
-  SHIFT_OR,
-  UKKONEN,
-  NO_ALGORITHM
-};
+std::ostream& operator<< (std::ostream& out,
+                          const std::vector<std::string>& v) {
+  out << "[";
+  for (int i = 0; i < static_cast<int>(v.size()); i++) {
+    if (i > 0) {
+      out << ", ";
+    }
+    out << '\'' << v[i] << '\'';
+  }
+  out << ']';
+  return out;
+}
 
-std::ostream& operator<< (std::ostream& out, Algorithms algorithm);
-
-Algorithms GetAlgorithm(std::string algorithm_name);
-std::pair<bool, int> StringToInt(const char *str);
-inline void StringToLower(std::string *str);
-
-}  // namespace util
-#endif  // SRC_LIB_UTIL_H_
+int main(int argc, char* const* argv) {
+  parse_args::InputArguments args = parse_args::ParseArgs(argc, argv);
+  std::cout << "max_error  = " << args.max_error << '\n'
+            << "patterns   = " << args.patterns << '\n'
+            << "text_files = " << args.text_files << '\n'
+            << "algorithm  = " << args.algorithm << '\n';
+  return EXIT_SUCCESS;
+}

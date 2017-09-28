@@ -22,14 +22,18 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "parse_args.h"
 
 #include <sys/stat.h>
-#include <glob.h>
 #include <getopt.h>
+#include <stdio.h>
 
 #include <fstream>
 #include <iostream>
 #include <tuple>
 #include <vector>
 #include <string>
+
+#include "resources.h"
+#include "algorithm.h"
+#include "util.h"
 
 using std::vector;
 using std::string;
@@ -39,31 +43,22 @@ namespace parse_args {
 InputArguments::InputArguments() {
   max_error = 0;
   count_flag = false;
-  algorithm = util::NO_ALGORITHM;
-}
-
-void PrintFile(const char *file_name) {
-  std::ifstream file(file_name);
-  string txt;
-  std::cout << file_name << ' ' << file.good() << '\n';
-  while (getline(file, txt)) {
-    std::cerr << txt << '\n';
-  }
+  algorithm = algorithm::NO_ALGORITHM;
 }
 
 // show usage message
 void ShowUsage(const char *base) {
-  PrintFile("USAGE_FILE");
+  printf(usage_msg, base, base, base, base);
 }
 
 // show help message
 void ShowHelp(const char *base) {
   ShowUsage(base);
-  PrintFile("HELP_FILE");
+  printf(help_msg, base);
 }
 
 void ShowVersion() {
-  PrintFile("VERSION_FILE");
+  printf(version_msg);
 }
 
 // read all patters in file_name (one per line) and push into patterns vector
@@ -142,8 +137,8 @@ InputArguments ParseArgs(int argc, char * const*argv) {
         break;
       }
       case 'a': {
-        args.algorithm = util::GetAlgorithm(optarg);
-        if (args.algorithm == util::NO_ALGORITHM) {
+        args.algorithm = algorithm::GetAlgorithm(optarg);
+        if (args.algorithm == algorithm::NO_ALGORITHM) {
           std::cerr << argv[0] << ": " << optarg
                     << ": Invalid algorithm name\n";
           exit(EXIT_FAILURE);
@@ -218,15 +213,21 @@ InputArguments ParseArgs(int argc, char * const*argv) {
   }
 
   // ======================= setting default algorithms ====================
-  if (args.algorithm == util::NO_ALGORITHM) {
+  if (args.algorithm == algorithm::NO_ALGORITHM) {
     if (args.max_error > 0) {
-      args.algorithm = util::UKKONEN;
+      args.algorithm = algorithm::UKKONEN;
     } else if (args.patterns.size() > 1) {
-      args.algorithm = util::AHO_CORASICK;
+      args.algorithm = algorithm::AHO_CORASICK;
     } else {
-      args.algorithm = util::KMP;
+      args.algorithm = algorithm::KMP;
+    }
+  } else if (args.max_error > 0) {
+    if (args.algorithm != algorithm::UKKONEN) {  // TODO(lvcs): add other algorithms
+      std::cerr << argv[0] << ": Invalid algorithm\n";
+      exit(EXIT_FAILURE);
     }
   }
+
   // TODO(lvcs): check what to do if algorithm is set to a exact match one
   //             but max_error is set to a number > 0
   return args;

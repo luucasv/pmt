@@ -18,25 +18,35 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#include "util.h"
+#ifndef SRC_ALGORITHM_H
+#define SRC_ALGORITHM_H
 
-#include <algorithm>
-#include <utility>
+#include <string>
+#include <vector>
 #include <iostream>
 
-namespace util {
+namespace algorithm {
 
-std::pair<bool, int> StringToInt(const char *str) {
-  if (str[0] == '\0' || (!isdigit(str[0]) && str[0] != '-' && str[0] != '-')) {
-    return std::make_pair(false, 0);
-  }
-  char *end;
-  int ans = static_cast<int>(strtol(str, &end, 10L));
-  return std::make_pair(*end == '\0', ans);
-}
+enum Algorithms {
+  KMP,
+  AHO_CORASICK,
+  SHIFT_OR,
+  UKKONEN,
+  NO_ALGORITHM
+};
 
-void StringToLower(std::string *str) {
-  std::transform((*str).begin(), (*str).end(), (*str).begin(), ::tolower); 
-}
+std::ostream& operator<< (std::ostream& out, Algorithms algorithm);
+Algorithms GetAlgorithm(std::string algorithm_name);
 
-}  // namespace util
+class Algorithm {
+public:
+  Algorithm();
+  virtual void Build(const std::vector<std::string> &patterns);
+  virtual int Search(const std::string &text);
+protected:
+  std::vector<std::string> patterns_;
+};
+
+}  // namespace algorithm
+
+#endif  // SRC_ALGORITHM_H

@@ -27,19 +27,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 namespace util {
 
-enum Algorithms {
-  KMP,
-  AHO_CORASICK,
-  SHIFT_OR,
-  UKKONEN,
-  NO_ALGORITHM
-};
-
-std::ostream& operator<< (std::ostream& out, Algorithms algorithm);
-
-Algorithms GetAlgorithm(std::string algorithm_name);
 std::pair<bool, int> StringToInt(const char *str);
-inline void StringToLower(std::string *str);
+void StringToLower(std::string *str);
 
 }  // namespace util
 #endif  // SRC_LIB_UTIL_H_

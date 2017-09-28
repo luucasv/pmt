@@ -18,30 +18,43 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
+#include "algorithm.h"
+
+#include <string>
 #include <iostream>
 
 #include "util.h"
-#include "parse_args.h"
-#include "algorithm.h"
 
-std::ostream& operator<< (std::ostream& out,
-                          const std::vector<std::string>& v) {
-  out << "[";
-  for (int i = 0; i < static_cast<int>(v.size()); i++) {
-    if (i > 0) {
-      out << ", ";
-    }
-    out << '\'' << v[i] << '\'';
+namespace algorithm {
+// rule to outup a Algorithms
+std::ostream& operator<< (std::ostream& out, Algorithms algorithm) {
+  if (algorithm == KMP) {
+    out << "KMP";
+  } else if (algorithm == AHO_CORASICK) {
+    out << "AHO_CORASICK";
+  } else if (algorithm == SHIFT_OR) {
+    out << "SHIFT_OR";
+  } else if (algorithm == UKKONEN) {
+    out << "UKKONEN";
+  } else {
+    out << "NO_ALGORITHM";
   }
-  out << ']';
   return out;
 }
 
-int main(int argc, char* const* argv) {
-  parse_args::InputArguments args = parse_args::ParseArgs(argc, argv);
-  std::cout << "max_error  = " << args.max_error << '\n'
-            << "patterns   = " << args.patterns << '\n'
-            << "text_files = " << args.text_files << '\n'
-            << "algorithm  = " << args.algorithm << '\n';
-  return EXIT_SUCCESS;
+Algorithms GetAlgorithm(std::string algorithm_name) {
+  util::StringToLower(&algorithm_name);
+  if (algorithm_name == "kmp") {
+    return KMP;
+  } else if (algorithm_name == "aho_corasick") {
+    return AHO_CORASICK;
+  } else if (algorithm_name == "shift_or") {
+    return SHIFT_OR;
+  } else if (algorithm_name == "ukkonen") {
+    return UKKONEN;
+  } else {
+    return NO_ALGORITHM;
+  }
 }
+
+}  // namespace algorithm

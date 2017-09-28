@@ -24,7 +24,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <string>
 #include <vector>
 
-#include "util.h"
+#include "algorithm.h"
 
 namespace parse_args {
 
@@ -32,7 +32,7 @@ struct InputArguments {
   int max_error;
   std::vector<std::string> patterns;
   std::vector<std::string> text_files;
-  util::Algorithms algorithm;
+  algorithm::Algorithms algorithm;
   bool count_flag;
 
   InputArguments();

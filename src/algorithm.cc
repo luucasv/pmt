@@ -20,10 +20,15 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include "algorithm.h"
 
+#include <assert.h>
+
 #include <string>
 #include <iostream>
 
 #include "util.h"
+
+using std::vector;
+using std::string;
 
 namespace algorithm {
 // rule to outup a Algorithms
@@ -36,13 +41,15 @@ std::ostream& operator<< (std::ostream& out, Algorithms algorithm) {
     out << "SHIFT_OR";
   } else if (algorithm == UKKONEN) {
     out << "UKKONEN";
+  } else if (algorithm == NAIVE) {
+    out << "NAIVE";
   } else {
     out << "NO_ALGORITHM";
   }
   return out;
 }
 
-Algorithms GetAlgorithm(std::string algorithm_name) {
+Algorithms GetAlgorithm(string algorithm_name) {
   util::StringToLower(&algorithm_name);
   if (algorithm_name == "kmp") {
     return KMP;
@@ -52,9 +59,27 @@ Algorithms GetAlgorithm(std::string algorithm_name) {
     return SHIFT_OR;
   } else if (algorithm_name == "ukkonen") {
     return UKKONEN;
+  } else if (algorithm_name == "naive") {
+    return NAIVE;
   } else {
     return NO_ALGORITHM;
   }
 }
+
+// Implements virtual functions to do nothing
+// It needs to be done or we'll get "undefined reference to typeinfo" error
+// at compilation time
+// this code should never run
+Algorithm::Algorithm() {}
+
+void Algorithm::Build(const vector<string> &patterns) {
+  assert(false);
+}
+
+int Algorithm::Search(const string &text) {
+  assert(false);
+  return 0;
+}
+
 
 }  // namespace algorithm

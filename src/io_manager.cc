@@ -18,17 +18,36 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_UTIL_H_
-#define SRC_UTIL_H_
+#include "io_manager.h"
 
 #include <string>
-#include <utility>
+#include <fstream>
 #include <iostream>
+#include <iomanip>
 
-namespace util {
+#include "algorithm.h"
 
-std::pair<bool, int> StringToInt(const char *str);
-void StringToLower(std::string *str);
+namespace io_manager {
+  
+void ProcessFile(
+    const std::string &file_name, 
+    algorithm::Algorithm *search_algorithm,
+    bool count_flag) {
+  std::ifstream text_file(file_name.c_str());
+  std::cout << "\nFor " << file_name << ": \n";
+  std::string text_line;
+  long long total_count = 0;
+  while (getline(text_file, text_line)) {
+    int line_count = search_algorithm->Search(text_line);
+    if (line_count > 0 && !count_flag) {
+      std::cout << text_line << '\n';
+    } else {
+      total_count += line_count;
+    }
+  }
+  if (count_flag) {
+    std::cout << "Total number of occurences = " << total_count << '\n';
+  }
+}
 
-}  // namespace util
-#endif  // SRC_UTIL_H_
+}  // namespace io_manager

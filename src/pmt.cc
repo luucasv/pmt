@@ -18,11 +18,15 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
+#include <assert.h>
+
 #include <iostream>
 
 #include "util.h"
 #include "parse_args.h"
 #include "algorithm.h"
+#include "naive.h"
+#include "io_manager.h"
 
 std::ostream& operator<< (std::ostream& out,
                           const std::vector<std::string>& v) {
@@ -39,9 +43,21 @@ std::ostream& operator<< (std::ostream& out,
 
 int main(int argc, char* const* argv) {
   parse_args::InputArguments args = parse_args::ParseArgs(argc, argv);
+  std::cout << "For debbug: \nArguments:\n";
   std::cout << "max_error  = " << args.max_error << '\n'
             << "patterns   = " << args.patterns << '\n'
             << "text_files = " << args.text_files << '\n'
             << "algorithm  = " << args.algorithm << '\n';
+  algorithm::Algorithm *search_algorithm = nullptr;
+  if (args.algorithm == algorithm::NAIVE) {
+    search_algorithm = new naive::Naive();
+  }  //TODO(lvcs, tfg): complete this list
+
+  assert(search_algorithm != nullptr);
+
+  search_algorithm->Build(args.patterns);
+  for (const std::string &text_file : args.text_files) {
+    io_manager::ProcessFile(text_file, search_algorithm, args.count_flag);
+  }
   return EXIT_SUCCESS;
 }

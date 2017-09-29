@@ -18,8 +18,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_LIB_PARSE_ARGS_H_
-#define SRC_LIB_PARSE_ARGS_H_
+#ifndef SRC_PARSE_ARGS_H_
+#define SRC_PARSE_ARGS_H_
 
 #include <string>
 #include <vector>
@@ -43,4 +43,4 @@ InputArguments ParseArgs(int argc, char* const*argv);
 
 }  // namespace parse_args
 
-#endif  // SRC_LIB_PARSE_ARGS_H_
+#endif  // SRC_PARSE_ARGS_H_

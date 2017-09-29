@@ -18,17 +18,20 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_UTIL_H_
-#define SRC_UTIL_H_
+#ifndef SRC_IO_MANAGER_H
+#define SRC_IO_MANAGER_H
 
 #include <string>
-#include <utility>
-#include <iostream>
 
-namespace util {
+#include "algorithm.h"
 
-std::pair<bool, int> StringToInt(const char *str);
-void StringToLower(std::string *str);
+namespace io_manager {
 
-}  // namespace util
-#endif  // SRC_UTIL_H_
+void ProcessFile(
+    const std::string &file_name, 
+    algorithm::Algorithm *search_algorithm,
+    bool count_flag);
+
+}  // namespace io_manager
+
+#endif  // SRC_IO_MANAGER_H

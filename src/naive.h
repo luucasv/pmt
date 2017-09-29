@@ -18,17 +18,22 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_UTIL_H_
-#define SRC_UTIL_H_
+#ifndef SRC_NAIVE_H
+#define SRC_NAIVE_H 
+
+#include "algorithm.h"
 
 #include <string>
-#include <utility>
-#include <iostream>
+#include <vector>
 
-namespace util {
+namespace naive {
 
-std::pair<bool, int> StringToInt(const char *str);
-void StringToLower(std::string *str);
+class Naive : public algorithm::Algorithm { 
+public:
+  void Build(const std::vector<std::string> &patterns);
+  int Search(const std::string &text);
+};
 
-}  // namespace util
-#endif  // SRC_UTIL_H_
+}  // namespace naive
+
+#endif  // SRC_NAIVE_H

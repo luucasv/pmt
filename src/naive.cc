@@ -18,36 +18,42 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_ALGORITHM_H
-#define SRC_ALGORITHM_H
+#include "naive.h"
 
+#include "algorithm.h"
 #include <string>
 #include <vector>
-#include <iostream>
 
-namespace algorithm {
+using std::vector;
+using std::string;
 
-enum Algorithms {
-  KMP,
-  AHO_CORASICK,
-  SHIFT_OR,
-  UKKONEN,
-  NAIVE,
-  NO_ALGORITHM
-};
+namespace naive {
 
-std::ostream& operator<< (std::ostream& out, Algorithms algorithm);
-Algorithms GetAlgorithm(std::string algorithm_name);
+void Naive::Build(const vector<string> &patterns) {
+  this->patterns_ = patterns;
+}
 
-class Algorithm {
-public:
-  Algorithm();
-  virtual void Build(const std::vector<std::string> &patterns);
-  virtual int Search(const std::string &text);
-protected:
-  std::vector<std::string> patterns_;
-};
+// return the number of occorencies of the patterns_ in the text
+int Naive::Search(const string &text) {
+  const int text_size = static_cast<int>(text.size());
+  int count = 0;
+  for (const string &pattern : this->patterns_) {
+    const int pattern_size = static_cast<int>(pattern.size());
+    for (int pos = 0; pos < text_size; pos++) {
+      int len = 0;
+      while (pos + len < text_size && len < pattern_size) {
+        if (text[pos + len] != pattern[len]) {
+          break;
+        } else {
+          len++;
+        }
+      }
+      if (len == pattern_size) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
 
-}  // namespace algorithm
-
-#endif  // SRC_ALGORITHM_H
+}  // namespace naive

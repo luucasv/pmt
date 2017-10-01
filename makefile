@@ -1,7 +1,7 @@
 CXX=g++
 RM=rm -f
 MK=mkdir -p
-CPPFLAGS=-std=c++11 -O2 -Wall -Werror -Wconversion
+CPPFLAGS=-std=c++11 -O2 -Wall -Werror -Wconversion -pg
 LDLIB=-lm
 
 OUTPUTDIR=bin
@@ -14,9 +14,9 @@ OBJS=$(subst .cc,.o,$(SRCS))
 all: mkdirs pmt clean
 
 pmt: $(OBJS)
-	$(CXX) -o $(OUTPUTDIR)/pmt $(OBJS) $(LDLIB)
+	$(CXX) -o $(OUTPUTDIR)/pmt $(OBJS) $(LDLIB) -pg
 
-%.o : src/%.cc
+%.o : $(SRCDIR)/%.cc
 	$(CXX) $(CPPFLAGS) -c $< -o $(OUTPUTDIR)/$@ $(DEFS)
 
 mkdirs:

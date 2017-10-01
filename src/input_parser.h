@@ -18,21 +18,31 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_IO_MANAGER_H_
-#define SRC_IO_MANAGER_H_
+#ifndef SRC_INPUT_PARSER_H_
+#define SRC_INPUT_PARSER_H_
 
 #include <string>
 #include <vector>
 
 #include "algorithm.h"
 
-namespace io_manager {
+namespace input_parser {
 
-void ProcessFiles(
-    algorithm::Algorithm *search_algorithm,
-    const std::vector<std::string> &file_name,
-    bool count_flag);
+struct InputArguments {
+  int max_error;
+  std::vector<std::string> patterns;
+  std::vector<std::string> text_files;
+  algorithm::AlgorithmEnum algorithm;
+  bool count_flag;
 
-}  // namespace io_manager
+  InputArguments();
+};
 
-#endif  // SRC_IO_MANAGER_H_
+void ShowArgs(const InputArguments &args);
+
+// parse all arguments
+InputArguments ParseArgs(int argc, char* const*argv);
+
+}  // namespace input_parser
+
+#endif  // SRC_INPUT_PARSER_H_

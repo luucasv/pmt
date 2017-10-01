@@ -23,30 +23,44 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <iomanip>
 
 #include "algorithm.h"
 
 namespace io_manager {
-  
+
 void ProcessFile(
-    const std::string &file_name, 
     algorithm::Algorithm *search_algorithm,
+    const std::string &file_name,
     bool count_flag) {
+
   std::ifstream text_file(file_name.c_str());
-  std::cout << "\nFor " << file_name << ": \n";
   std::string text_line;
-  long long total_count = 0;
+  int total_count = 0, lines_count = 0;
+
+  std::cout << "\nFor " << file_name << ": \n";
   while (getline(text_file, text_line)) {
     int line_count = search_algorithm->Search(text_line);
-    if (line_count > 0 && !count_flag) {
-      std::cout << text_line << '\n';
-    } else {
-      total_count += line_count;
+    if (line_count > 0) {
+      if (count_flag) {
+        lines_count++;
+        total_count += line_count;
+      } else {
+        std::cout << text_line << '\n';
+      }
     }
   }
   if (count_flag) {
-    std::cout << "Total number of occurences = " << total_count << '\n';
+    std::cout << total_count << " occurrences in " << lines_count << " lines\n";
+  }
+}
+
+void ProcessFiles(
+    algorithm::Algorithm *search_algorithm,
+    const std::vector<std::string> &file_names,
+    bool count_flag) {
+
+  for (const std::string &file_name : file_names) {
+    ProcessFile(search_algorithm, file_name, count_flag);
   }
 }
 

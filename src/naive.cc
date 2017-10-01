@@ -20,7 +20,6 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include "naive.h"
 
-#include "algorithm.h"
 #include <string>
 #include <vector>
 

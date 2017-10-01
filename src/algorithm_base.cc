@@ -18,29 +18,31 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_PARSE_ARGS_H_
-#define SRC_PARSE_ARGS_H_
+#include "algorithm_base.h"
 
-#include <string>
+#include <assert.h>
+
 #include <vector>
+#include <string>
 
-#include "algorithm.h"
+namespace algorithm {
 
-namespace parse_args {
+// Implements virtual functions to do nothing
+// It needs to be done or we'll get "undefined reference to typeinfo" error
+// at compilation time
+// this code should never run
+Algorithm::Algorithm() {}
 
-struct InputArguments {
-  int max_error;
-  std::vector<std::string> patterns;
-  std::vector<std::string> text_files;
-  algorithm::Algorithms algorithm;
-  bool count_flag;
+Algorithm::~Algorithm() {}
 
-  InputArguments();
-};
+void Algorithm::Build(const std::vector<std::string> &patterns) {
+  assert(false);
+}
 
-// parse all arguments
-InputArguments ParseArgs(int argc, char* const*argv);
+int Algorithm::Search(const std::string &text) {
+  assert(false);
+  return 0;
+}
 
-}  // namespace parse_args
 
-#endif  // SRC_PARSE_ARGS_H_
+}  // namespace algorithm

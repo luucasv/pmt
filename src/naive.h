@@ -18,22 +18,22 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_NAIVE_H
-#define SRC_NAIVE_H 
-
-#include "algorithm.h"
+#ifndef SRC_NAIVE_H_
+#define SRC_NAIVE_H_
 
 #include <string>
 #include <vector>
 
+#include "algorithm_base.h"
+
 namespace naive {
 
-class Naive : public algorithm::Algorithm { 
-public:
+class Naive : public algorithm::Algorithm {
+ public:
   void Build(const std::vector<std::string> &patterns);
   int Search(const std::string &text);
 };
 
 }  // namespace naive
 
-#endif  // SRC_NAIVE_H
+#endif  // SRC_NAIVE_H_

@@ -19,7 +19,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 */
 
 
-#include "parse_args.h"
+#include "input_parser.h"
 
 #include <sys/stat.h>
 #include <getopt.h>
@@ -38,7 +38,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 using std::vector;
 using std::string;
 
-namespace parse_args {
+namespace input_parser {
 
 InputArguments::InputArguments() {
   max_error = 0;
@@ -48,17 +48,59 @@ InputArguments::InputArguments() {
 
 // show usage message
 void ShowUsage(const char *base) {
-  printf(usage_msg, base, base, base, base);
+  printf(USAGE_MESSAGE, base, base, base, base);
 }
 
 // show help message
 void ShowHelp(const char *base) {
   ShowUsage(base);
-  printf(help_msg, base);
+  printf(HELP_MESSAGE, base);
 }
 
 void ShowVersion() {
-  printf(version_msg);
+  puts(VERSION_MESSAGE);
+}
+
+std::ostream& operator<< (std::ostream& out,
+                          const std::vector<std::string>& v) {
+  out << "[";
+  for (int i = 0; i < static_cast<int>(v.size()); i++) {
+    if (i > 0) {
+      out << ", ";
+    }
+    out << '\'' << v[i] << '\'';
+  }
+  out << ']';
+  return out;
+}
+
+std::ostream& operator<< (std::ostream& out,
+                          algorithm::AlgorithmEnum algorithm) {
+  if (algorithm == algorithm::KMP) {
+    out << "KMP";
+  } else if (algorithm == algorithm::AHO_CORASICK) {
+    out << "AHO_CORASICK";
+  } else if (algorithm == algorithm::SHIFT_OR) {
+    out << "SHIFT_OR";
+  } else if (algorithm == algorithm::UKKONEN) {
+    out << "UKKONEN";
+  } else if (algorithm == algorithm::NAIVE) {
+    out << "NAIVE";
+  } else if (algorithm == algorithm::SELLERS) {
+    out << "SELLERS";
+  } else if (algorithm == algorithm::WU_MANBER) {
+    out << "WU_MANBER";
+  }
+  return out;
+}
+
+
+void ShowArgs(const InputArguments &args) {
+  std::cout << "For debbug: \nArguments:\n";
+  std::cout << "max_error  = " << args.max_error << '\n'
+            << "patterns   = " << args.patterns << '\n'
+            << "text_files = " << args.text_files << '\n'
+            << "algorithm  = " << args.algorithm << '\n';
 }
 
 // read all patters in file_name (one per line) and push into patterns vector
@@ -91,10 +133,7 @@ inline const char* GetFileMessage(const char *file_name) {
 }
 
 InputArguments ParseArgs(int argc, char * const*argv) {
-  // TODO(lvcs): Perguntar sobre pattern, se deveria ter um pattern obrigatório
-  // depois que um arquivo de padrões foi espcificado
-
-  // Return variabel, already set to its default values
+  // Return variable, already set to its default values
   InputArguments args;
 
   // ===================== parsing options ==============================
@@ -137,7 +176,7 @@ InputArguments ParseArgs(int argc, char * const*argv) {
         break;
       }
       case 'a': {
-        args.algorithm = algorithm::GetAlgorithm(optarg);
+        args.algorithm = algorithm::GetAlgorithmEnum(optarg);
         if (args.algorithm == algorithm::NO_ALGORITHM) {
           std::cerr << argv[0] << ": " << optarg
                     << ": Invalid algorithm name\n";
@@ -222,15 +261,12 @@ InputArguments ParseArgs(int argc, char * const*argv) {
       args.algorithm = algorithm::KMP;
     }
   } else if (args.max_error > 0) {
-    if (args.algorithm != algorithm::UKKONEN) {  // TODO(lvcs): add other algorithms
+    if (algorithm::IsAproximatedMatchAlgorithm(args.algorithm)) {
       std::cerr << argv[0] << ": Invalid algorithm\n";
       exit(EXIT_FAILURE);
     }
   }
-
-  // TODO(lvcs): check what to do if algorithm is set to a exact match one
-  //             but max_error is set to a number > 0
   return args;
 }
 
-}  // namespace parse_args
+}  // namespace input_parser

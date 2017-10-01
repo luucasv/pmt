@@ -18,21 +18,25 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_IO_MANAGER_H_
-#define SRC_IO_MANAGER_H_
+#ifndef SRC_ALGORITHM_BASE_H_
+#define SRC_ALGORITHM_BASE_H_
 
 #include <string>
 #include <vector>
+#include <iostream>
 
-#include "algorithm.h"
+namespace algorithm {
 
-namespace io_manager {
+class Algorithm {
+ public:
+  Algorithm();
+  virtual ~Algorithm();
+  virtual void Build(const std::vector<std::string> &patterns);
+  virtual int Search(const std::string &text);
+ protected:
+  std::vector<std::string> patterns_;
+};
 
-void ProcessFiles(
-    algorithm::Algorithm *search_algorithm,
-    const std::vector<std::string> &file_name,
-    bool count_flag);
+}  // namespace algorithm
 
-}  // namespace io_manager
-
-#endif  // SRC_IO_MANAGER_H_
+#endif  // SRC_ALGORITHM_BASE_H_

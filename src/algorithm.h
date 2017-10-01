@@ -18,36 +18,34 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_ALGORITHM_H
-#define SRC_ALGORITHM_H
+#ifndef SRC_ALGORITHM_H_
+#define SRC_ALGORITHM_H_
 
 #include <string>
 #include <vector>
 #include <iostream>
 
+#include "algorithm_base.h"
+
 namespace algorithm {
 
-enum Algorithms {
-  KMP,
-  AHO_CORASICK,
-  SHIFT_OR,
-  UKKONEN,
+// All algorithms implemented
+enum AlgorithmEnum {
   NAIVE,
+  KMP,
+  SHIFT_OR,
+  AHO_CORASICK,
+  SELLERS,
+  UKKONEN,
+  WU_MANBER,
   NO_ALGORITHM
 };
 
-std::ostream& operator<< (std::ostream& out, Algorithms algorithm);
-Algorithms GetAlgorithm(std::string algorithm_name);
+AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name);
+bool IsAproximatedMatchAlgorithm(AlgorithmEnum algorithm);
 
-class Algorithm {
-public:
-  Algorithm();
-  virtual void Build(const std::vector<std::string> &patterns);
-  virtual int Search(const std::string &text);
-protected:
-  std::vector<std::string> patterns_;
-};
+Algorithm* GetAlgorithm(AlgorithmEnum algorithm);
 
 }  // namespace algorithm
 
-#endif  // SRC_ALGORITHM_H
+#endif  // SRC_ALGORITHM_H_

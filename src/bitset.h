@@ -22,11 +22,13 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #define SRC_BITSET_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include <vector>
 
 namespace bitset {
 
+typedef uint32_t bucket_t; 
 class Bitset {
  public:
   class BitsetReference;
@@ -37,6 +39,7 @@ class Bitset {
   void set();
   void set(size_t position);
   bool at(size_t position) const;
+  size_t length() const;
   BitsetReference operator[](size_t position) const;
   Bitset operator<<(size_t shift_size) const;
   Bitset operator<<=(size_t shift_size);
@@ -46,11 +49,12 @@ class Bitset {
   Bitset operator|=(const Bitset &right_hand);
   Bitset operator&(const Bitset &right_hand) const;
   Bitset operator&=(const Bitset &right_hand);
-
- private:
-  typedef uint32_t bucket_t; 
-  const size_t BUCKET_SIZE = 8 * sizeof(bucket_t);
+ protected:
   std::vector<bucket_t> buckets_;
+  inline void set_mask(bucket_t mask, size_t start_position);
+  static bucket_t GetLowMask(size_t size);
+ private:
+  const size_t BUCKET_SIZE = 8 * sizeof(bucket_t);
   size_t length_;
 };
 

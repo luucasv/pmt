@@ -28,9 +28,9 @@ int main(int argc, char* const* argv) {
   input_parser::InputArguments args = input_parser::ParseArgs(argc, argv);
   input_parser::ShowArgs(args);
 
-  algorithm::Algorithm *algorithm = algorithm::GetAlgorithm(args.algorithm);
-
-  algorithm->Build(args.patterns);
+  algorithm::Algorithm *algorithm = algorithm::GetAlgorithm(args.algorithm,
+                                                            args.patterns,
+                                                            args.max_error);
 
   io_manager::ProcessFiles(algorithm, args.text_files, args.count_flag);
 

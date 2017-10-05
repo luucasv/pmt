@@ -44,7 +44,10 @@ enum AlgorithmEnum {
 AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name);
 bool IsAproximatedMatchAlgorithm(AlgorithmEnum algorithm);
 
-Algorithm* GetAlgorithm(AlgorithmEnum algorithm);
+Algorithm* GetAlgorithm(
+  AlgorithmEnum algorithm,
+  const std::vector<std::string> &patterns,
+  int max_error);
 
 }  // namespace algorithm
 

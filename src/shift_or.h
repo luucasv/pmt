@@ -18,41 +18,26 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#include "naive.h"
+#ifndef SRC_SHIFT_OR_H_
+#define SRC_SHIFT_OR_H_
 
 #include <string>
 #include <vector>
 
-using std::vector;
-using std::string;
+#include "bitset.h"
 
-namespace naive {
+#include "algorithm_base.h"
 
-Naive::Naive(const vector<string> &patterns) {
-  this->patterns_ = patterns;
-}
+namespace shift_or {
+  
+class ShiftOr : public algorithm::Algorithm {
+ public:
+  ShiftOr(const std::vector<std::string> &patterns);
+  int Search(const std::string &text);
+ private:
+  std::vector<std::vector<bitset::Bitset>> pattern_masks_;
+};
 
-// return the number of occorencies of the patterns_ in the text
-int Naive::Search(const string &text) {
-  const int text_size = static_cast<int>(text.size());
-  int count = 0;
-  for (const string &pattern : this->patterns_) {
-    const int pattern_size = static_cast<int>(pattern.size());
-    for (int pos = 0; pos < text_size; pos++) {
-      int len = 0;
-      while (pos + len < text_size && len < pattern_size) {
-        if (text[pos + len] != pattern[len]) {
-          break;
-        } else {
-          len++;
-        }
-      }
-      if (len == pattern_size) {
-        count++;
-      }
-    }
-  }
-  return count;
-}
+}  // namespace shift_or
 
-}  // namespace naive
+#endif  // SRC_SHIFT_OR_H_

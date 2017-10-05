@@ -54,9 +54,9 @@ bucket_t Bitset::GetLowMask(size_t size) {
   if (size == size_t(1)) {
     return bucket_t(1);
   }
-  size -= 2;
+  size -= 1;
   bucket_t ans = (bucket_t(1) << size) - 1;
-  ans |= bucket_t(1) << (size + 1);
+  ans |= bucket_t(1) << size;
   return ans;
 }
 
@@ -127,17 +127,17 @@ inline void Bitset::set_mask(bucket_t mask, size_t start_position) {
   size_t bucket_id = start_position / BUCKET_SIZE,
   bucket_position  = start_position % BUCKET_SIZE;
   if (bucket_id < this->buckets_.size()) {
-    bucket_t first_bits = (mask >> (BUCKET_SIZE - 1 - bucket_position)),
-    reset_mask = ~(this->GetLowMask(bucket_position + 1));
-    this->buckets_[bucket_id] &= reset_mask;
+    bucket_t first_bits = (mask >> (BUCKET_SIZE - 1 - bucket_position));
+    /* reset_mask = ~(this->GetLowMask(bucket_position + 1));
+    this->buckets_[bucket_id] &= reset_mask; */
     this->buckets_[bucket_id] |= first_bits;
   }
   if (bucket_id - 1 >= 0 && bucket_position + 1 != BUCKET_SIZE) {
-    bucket_t last_bits = (mask << (bucket_position + 1)),
-    reset_mask = this->GetLowMask(BUCKET_SIZE - bucket_position - 1);
+    bucket_t last_bits = (mask << (bucket_position + 1));
+    /* reset_mask = this->GetLowMask(BUCKET_SIZE - bucket_position - 1);
     reset_mask <<= (bucket_position + 1);
     reset_mask = ~reset_mask;
-    this->buckets_[bucket_id] &= reset_mask;    
+    this->buckets_[bucket_id] &= reset_mask;   */  
     this->buckets_[bucket_id - 1] |= last_bits;
   }
 }
@@ -160,14 +160,14 @@ Bitset Bitset::operator<<=(size_t shift_size) {
   return *this;
 }
 
-Bitset Bitset::operator>>(size_t shift_size) const {
+/* Bitset Bitset::operator>>(size_t shift_size) const {
   return Bitset();
 }
 
 Bitset Bitset::operator>>=(size_t shift_size) {
   return *this;
 }
-
+ */
 Bitset Bitset::operator|(const Bitset &right_hand) const {
   assert(this->length_ == right_hand.length());
   Bitset ans(this->length_);

@@ -29,7 +29,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 namespace bitset {
 
-typedef uint32_t bucket_t; 
+typedef uint64_t bucket_t; 
 class Bitset {
  public:
   class BitsetReference;
@@ -45,8 +45,8 @@ class Bitset {
   BitsetReference operator[](size_t position);
   Bitset operator<<(size_t shift_size) const;
   Bitset operator<<=(size_t shift_size);
-  Bitset operator>>(size_t shift_size) const;
-  Bitset operator>>=(size_t shift_size);
+  /* Bitset operator>>(size_t shift_size) const;
+  Bitset operator>>=(size_t shift_size); */
   Bitset operator|(const Bitset &right_hand) const;
   Bitset operator|=(const Bitset &right_hand);
   Bitset operator&(const Bitset &right_hand) const;
@@ -57,7 +57,7 @@ class Bitset {
   inline void set_mask(bucket_t mask, size_t start_position);
   bucket_t GetLowMask(size_t size);
  private:
-  const size_t BUCKET_SIZE = 8 * sizeof(bucket_t);
+  static const size_t BUCKET_SIZE = 8 * sizeof(bucket_t);
   size_t length_;
 };
 

@@ -25,6 +25,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "algorithm_base.h"
 #include "util.h"
 #include "naive.h"
+#include "shift_or.h"
 
 namespace algorithm {
 
@@ -53,10 +54,15 @@ bool IsAproximatedMatchAlgorithm(AlgorithmEnum algorithm) {
   return algorithm == WU_MANBER || algorithm == SELLERS || algorithm == UKKONEN;
 }
 
-Algorithm* GetAlgorithm(AlgorithmEnum algorithm) {
+Algorithm* GetAlgorithm(
+    AlgorithmEnum algorithm,
+    const std::vector<std::string> &patterns,
+    int max_error) {
   // TODO(lvcs): add all algorithms
   if (algorithm == NAIVE) {
-    return new naive::Naive();
+    return new naive::Naive(patterns);
+  } else if (algorithm == SHIFT_OR) {
+    return new shift_or::ShiftOr(patterns);
   } else {
     return nullptr;
   }

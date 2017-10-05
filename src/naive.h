@@ -30,7 +30,7 @@ namespace naive {
 
 class Naive : public algorithm::Algorithm {
  public:
-  void Build(const std::vector<std::string> &patterns);
+  Naive(const std::vector<std::string> &patterns);
   int Search(const std::string &text);
 };
 

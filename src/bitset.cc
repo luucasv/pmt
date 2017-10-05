@@ -22,11 +22,15 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include <assert.h>
 
+#include <string>
+
 namespace bitset {
 
 // Bitset Reference
 
-Bitset::BitsetReference::BitsetReference(bucket_t *bucket_reference, size_t position) {
+Bitset::BitsetReference::BitsetReference(
+    bucket_t *bucket_reference,
+    size_t position) {
   this->bucket_reference_ = bucket_reference;
   this->position_ = position;
 }
@@ -149,7 +153,9 @@ Bitset Bitset::operator<<(size_t shift_size) const {
 
 Bitset Bitset::operator<<=(size_t shift_size) {
   for (size_t i = this->buckets_.size(); i > 0; i--) {
-    this->set_mask(this->buckets_[i-1], i * BUCKET_SIZE - 1 + shift_size);
+    bucket_t bucket = this->buckets_[i-1];
+    this->buckets_[i-1] = bucket_t(0);
+    this->set_mask(bucket, i * BUCKET_SIZE - 1 + shift_size);
   }
   return *this;
 }
@@ -194,6 +200,14 @@ Bitset Bitset::operator&=(const Bitset &right_hand) {
     this->buckets_[i] &= right_hand.buckets_[i];
   }
   return *this;
+}
+
+std::string Bitset::to_string() const {
+  std::string ans(this->length_, '0');
+  for (size_t i = 0; i < this->length_; i++) {
+    ans[i] = this->at(this->length_ - i - 1) ? '1' : '0';
+  }
+  return ans;
 }
 
 }  // namespace bitset

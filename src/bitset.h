@@ -25,6 +25,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <stdlib.h>
 
 #include <vector>
+#include <string>
 
 namespace bitset {
 
@@ -50,7 +51,7 @@ class Bitset {
   Bitset operator|=(const Bitset &right_hand);
   Bitset operator&(const Bitset &right_hand) const;
   Bitset operator&=(const Bitset &right_hand);
-  void print() const;
+  std::string to_string() const;
  protected:
   std::vector<bucket_t> buckets_;
   inline void set_mask(bucket_t mask, size_t start_position);

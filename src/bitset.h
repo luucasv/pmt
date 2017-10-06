@@ -29,7 +29,9 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 namespace bitset {
 
-typedef uint64_t bucket_t; 
+typedef uint_fast64_t bucket_t; 
+const size_t BUCKET_SIZE = 8 * sizeof(bucket_t);
+const bucket_t NO_BITS = 3 + 3, MOD_MASK = (1 << NO_BITS) - 1;
 class Bitset {
  public:
   class BitsetReference;
@@ -44,20 +46,19 @@ class Bitset {
   bool operator[](size_t position) const;
   BitsetReference operator[](size_t position);
   Bitset operator<<(size_t shift_size) const;
-  Bitset operator<<=(size_t shift_size);
+  void operator<<=(size_t shift_size);
   /* Bitset operator>>(size_t shift_size) const;
   Bitset operator>>=(size_t shift_size); */
   Bitset operator|(const Bitset &right_hand) const;
-  Bitset operator|=(const Bitset &right_hand);
+  void operator|=(const Bitset &right_hand);
   Bitset operator&(const Bitset &right_hand) const;
-  Bitset operator&=(const Bitset &right_hand);
+  void operator&=(const Bitset &right_hand);
   std::string to_string() const;
  protected:
   std::vector<bucket_t> buckets_;
   inline void set_mask(bucket_t mask, size_t start_position);
   bucket_t GetLowMask(size_t size);
  private:
-  static const size_t BUCKET_SIZE = 8 * sizeof(bucket_t);
   size_t length_;
 };
 

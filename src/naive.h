@@ -31,7 +31,7 @@ namespace naive {
 class Naive : public algorithm::Algorithm {
  public:
   Naive(const std::vector<std::string> &patterns);
-  int Search(const std::string &text);
+  int Search(const std::string &text) const;
 };
 
 }  // namespace naive

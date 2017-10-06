@@ -33,7 +33,7 @@ Naive::Naive(const vector<string> &patterns) {
 }
 
 // return the number of occorencies of the patterns_ in the text
-int Naive::Search(const string &text) {
+int Naive::Search(const string &text) const {
   const int text_size = static_cast<int>(text.size());
   int count = 0;
   for (const string &pattern : this->patterns_) {

@@ -28,7 +28,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 namespace io_manager {
 
-void ProcessFile(
+inline void ProcessFile(
     algorithm::Algorithm *search_algorithm,
     const std::string &file_name,
     bool count_flag) {

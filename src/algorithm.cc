@@ -26,6 +26,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "util.h"
 #include "naive.h"
 #include "shift_or.h"
+#include "sellers.h"
 
 namespace algorithm {
 
@@ -63,6 +64,8 @@ Algorithm* GetAlgorithm(
     return new naive::Naive(patterns);
   } else if (algorithm == SHIFT_OR) {
     return new shift_or::ShiftOr(patterns);
+  } else if (algorithm == SELLERS) {
+    return new sellers::Sellers(patterns, max_error);
   } else {
     return nullptr;
   }

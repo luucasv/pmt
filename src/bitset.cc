@@ -20,8 +20,6 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include "bitset.h"
 
-#include <assert.h>
-
 #include <string>
 
 namespace bitset {
@@ -50,7 +48,6 @@ Bitset::BitsetReference::operator bool() const {
 
 // Bitset
 bucket_t Bitset::GetLowMask(size_t size) {
-  assert(size <= BUCKET_SIZE && size > 0);
   if (size == size_t(1)) {
     return bucket_t(1);
   }
@@ -81,8 +78,8 @@ void Bitset::reset() {
 }
 
 void Bitset::reset(size_t position) {
-  size_t bucket_id = position / BUCKET_SIZE,
-  bucket_position  = position % BUCKET_SIZE;
+  size_t bucket_id = position >> NO_BITS,
+  bucket_position  = position & MOD_MASK;
   this->buckets_[bucket_id] &= ~(bucket_t(1) << bucket_position);
 }
 
@@ -96,14 +93,14 @@ void Bitset::set() {
 }
 
 void Bitset::set(size_t position) {
-  size_t bucket_id = position / BUCKET_SIZE,
-  bucket_position  = position % BUCKET_SIZE;
+  size_t bucket_id = position >> NO_BITS,
+  bucket_position  = position & MOD_MASK;
   this->buckets_[bucket_id] |= (bucket_t(1) << bucket_position);
 }
 
 bool Bitset::at(size_t position) const {
-  size_t bucket_id = position / BUCKET_SIZE,
-  bucket_position  = position % BUCKET_SIZE;
+  size_t bucket_id = position >> NO_BITS,
+  bucket_position  = position & MOD_MASK;
   return bool((this->buckets_[bucket_id] >> bucket_position) & bucket_t(1)); 
 }
 
@@ -116,28 +113,22 @@ bool Bitset::operator[](size_t position) const {
 }
 
 Bitset::BitsetReference Bitset::operator[](size_t position) {
-  size_t bucket_id = position / BUCKET_SIZE,
-  bucket_position  = position % BUCKET_SIZE;
+  size_t bucket_id = position >> NO_BITS,
+  bucket_position  = position & MOD_MASK;
   return Bitset::BitsetReference(&this->buckets_[bucket_id], bucket_position);
 }
 
 // places a bit mask currectly buckts_ vector
 // first bit will be in start_position
 inline void Bitset::set_mask(bucket_t mask, size_t start_position) {
-  size_t bucket_id = start_position / BUCKET_SIZE,
-  bucket_position  = start_position % BUCKET_SIZE;
+  size_t bucket_id = start_position >> NO_BITS,
+  bucket_position  = start_position & MOD_MASK;
   if (bucket_id < this->buckets_.size()) {
     bucket_t first_bits = (mask >> (BUCKET_SIZE - 1 - bucket_position));
-    /* reset_mask = ~(this->GetLowMask(bucket_position + 1));
-    this->buckets_[bucket_id] &= reset_mask; */
     this->buckets_[bucket_id] |= first_bits;
   }
   if (bucket_id - 1 >= 0 && bucket_position + 1 != BUCKET_SIZE) {
     bucket_t last_bits = (mask << (bucket_position + 1));
-    /* reset_mask = this->GetLowMask(BUCKET_SIZE - bucket_position - 1);
-    reset_mask <<= (bucket_position + 1);
-    reset_mask = ~reset_mask;
-    this->buckets_[bucket_id] &= reset_mask;   */  
     this->buckets_[bucket_id - 1] |= last_bits;
   }
 }
@@ -151,13 +142,12 @@ Bitset Bitset::operator<<(size_t shift_size) const {
   return res;
 }
 
-Bitset Bitset::operator<<=(size_t shift_size) {
+void Bitset::operator<<=(size_t shift_size) {
   for (size_t i = this->buckets_.size(); i > 0; i--) {
     bucket_t bucket = this->buckets_[i-1];
     this->buckets_[i-1] = bucket_t(0);
     this->set_mask(bucket, i * BUCKET_SIZE - 1 + shift_size);
   }
-  return *this;
 }
 
 /* Bitset Bitset::operator>>(size_t shift_size) const {
@@ -169,7 +159,6 @@ Bitset Bitset::operator>>=(size_t shift_size) {
 }
  */
 Bitset Bitset::operator|(const Bitset &right_hand) const {
-  assert(this->length_ == right_hand.length());
   Bitset ans(this->length_);
   for (size_t i = 0; i < this->buckets_.size(); i++) {
     ans.buckets_[i] = this->buckets_[i] | right_hand.buckets_[i];
@@ -177,16 +166,13 @@ Bitset Bitset::operator|(const Bitset &right_hand) const {
   return ans;
 }
 
-Bitset Bitset::operator|=(const Bitset &right_hand) {
-  assert(this->length_ == right_hand.length());
+void Bitset::operator|=(const Bitset &right_hand) {
   for (size_t i = 0; i < this->buckets_.size(); i++) {
     this->buckets_[i] |= right_hand.buckets_[i];
   }
-  return *this;
 }
 
 Bitset Bitset::operator&(const Bitset &right_hand) const {
-  assert(this->length_ == right_hand.length());
   Bitset ans(this->length_);
   for (size_t i = 0; i < this->buckets_.size(); i++) {
     ans.buckets_[i] = this->buckets_[i] & right_hand.buckets_[i];
@@ -194,12 +180,10 @@ Bitset Bitset::operator&(const Bitset &right_hand) const {
   return ans;
 }
 
-Bitset Bitset::operator&=(const Bitset &right_hand) {
-  assert(this->length_ == right_hand.length());
+void Bitset::operator&=(const Bitset &right_hand) {
   for (size_t i = 0; i < this->buckets_.size(); i++) {
     this->buckets_[i] &= right_hand.buckets_[i];
   }
-  return *this;
 }
 
 std::string Bitset::to_string() const {

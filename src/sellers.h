@@ -18,27 +18,27 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
+#ifndef SRC_SELLERS_H_
+#define SRC_SELLERS_H_
+
+#include <string>
+#include <vector>
+
+#include "bitset.h"
+
 #include "algorithm_base.h"
 
-#include <assert.h>
+namespace sellers {
+  
+class Sellers : public algorithm::Algorithm {
+ public:
+  Sellers(const std::vector<std::string> &patterns, int max_error);
+  int Search(const std::string &text) const;
+ private:
+  int max_error_;
+  size_t max_pattern_size_;
+};
 
-#include <vector>
-#include <string>
+}  // namespace sellers
 
-namespace algorithm {
-
-// Implements virtual functions to do nothing
-// It needs to be done or we'll get "undefined reference to typeinfo" error
-// at compilation time
-// this code should never run
-Algorithm::Algorithm() {}
-
-Algorithm::~Algorithm() {}
-
-int Algorithm::Search(const std::string &text) const {
-  assert(false);
-  return 0;
-}
-
-
-}  // namespace algorithm
+#endif  // SRC_SELLERS_H_

@@ -31,8 +31,7 @@ class Algorithm {
  public:
   Algorithm();
   virtual ~Algorithm();
-  virtual void Build(const std::vector<std::string> &patterns);
-  virtual int Search(const std::string &text);
+  virtual int Search(const std::string &text) const;
  protected:
   std::vector<std::string> patterns_;
 };

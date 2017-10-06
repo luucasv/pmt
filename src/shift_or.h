@@ -33,7 +33,7 @@ namespace shift_or {
 class ShiftOr : public algorithm::Algorithm {
  public:
   ShiftOr(const std::vector<std::string> &patterns);
-  int Search(const std::string &text);
+  int Search(const std::string &text) const ;
  private:
   std::vector<std::vector<bitset::Bitset>> pattern_masks_;
 };

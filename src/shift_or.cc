@@ -52,20 +52,20 @@ ShiftOr::ShiftOr(const vector<string> &patterns) {
   }
 }
 
-int ShiftOr::Search(const string &text) {
+int ShiftOr::Search(const string &text) const {
   int count = 0;
-  for (const vector<Bitset> &masks : this->pattern_masks_) {
-    size_t pattern_length = masks[0].length(); 
+  for (size_t p = 0; p < this->pattern_masks_.size(); p++) {
+    size_t pattern_length = this->pattern_masks_[p][0].length();
     Bitset actual_mask(pattern_length, true);
     for (size_t i = 0; i < text.length(); i++) {
       actual_mask <<= 1;
-      actual_mask |= masks[text[i]];
-      if (!actual_mask[pattern_length - 1]) {
+      actual_mask |= this->pattern_masks_[p][text[i]];
+      if (!actual_mask.at(pattern_length - 1)) {
         count++;
       }
     }
   }
-  return count;
+  return count; 
 }
 
 }  // namespace shift_or

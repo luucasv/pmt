@@ -59,7 +59,7 @@ int ShiftOr::Search(const string &text) const {
     Bitset actual_mask(pattern_length, true);
     for (size_t i = 0; i < text.length(); i++) {
       actual_mask <<= 1;
-      actual_mask |= this->pattern_masks_[p][text[i]];
+      actual_mask |= this->pattern_masks_[p][(unsigned char) text[i]];
       if (!actual_mask.at(pattern_length - 1)) {
         count++;
       }

@@ -27,6 +27,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "naive.h"
 #include "shift_or.h"
 #include "sellers.h"
+#include "wu_manber.h"
+#include "wu_manber_naive.h"
 
 namespace algorithm {
 
@@ -66,6 +68,8 @@ Algorithm* GetAlgorithm(
     return new shift_or::ShiftOr(patterns);
   } else if (algorithm == SELLERS) {
     return new sellers::Sellers(patterns, max_error);
+  } else if (algorithm == WU_MANBER) {
+    return new wu_manber::WuManber(patterns, max_error);
   } else {
     return nullptr;
   }

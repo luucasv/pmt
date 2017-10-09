@@ -261,7 +261,7 @@ InputArguments ParseArgs(int argc, char * const*argv) {
       args.algorithm = algorithm::KMP;
     }
   } else if (args.max_error > 0) {
-    if (algorithm::IsAproximatedMatchAlgorithm(args.algorithm)) {
+    if (!algorithm::IsAproximatedMatchAlgorithm(args.algorithm)) {
       std::cerr << argv[0] << ": Invalid algorithm\n";
       exit(EXIT_FAILURE);
     }

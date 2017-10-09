@@ -18,39 +18,27 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_ALGORITHM_H_
-#define SRC_ALGORITHM_H_
+#ifndef SRC_SHIFT_OR_64_H_
+#define SRC_SHIFT_OR_64_H_
+
+#include <stdint.h>
 
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include "algorithm_base.h"
 
-namespace algorithm {
-
-// All algorithms implemented
-enum AlgorithmEnum {
-  NAIVE,
-  KMP,
-  SHIFT_OR,
-  SHIFT_OR_64,
-  AHO_CORASICK,
-  SELLERS,
-  UKKONEN,
-  WU_MANBER,
-  WU_MANBER_64,
-  NO_ALGORITHM
+namespace shift_or_64 {
+  
+class ShiftOr64 : public algorithm::Algorithm {
+ public:
+  ShiftOr64(const std::vector<std::string> &patterns);
+  int Search(const std::string &text) const ;
+ private:
+  std::vector<std::vector<uint_fast64_t>> pattern_masks_;
+  std::vector<size_t> lengths_;
 };
 
-AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name);
-bool IsAproximatedMatchAlgorithm(AlgorithmEnum algorithm);
+}  // namespace shift_or_64
 
-Algorithm* GetAlgorithm(
-  AlgorithmEnum algorithm,
-  const std::vector<std::string> &patterns,
-  int max_error);
-
-}  // namespace algorithm
-
-#endif  // SRC_ALGORITHM_H_
+#endif  // SRC_SHIFT_OR_64_H_

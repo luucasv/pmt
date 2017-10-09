@@ -82,6 +82,8 @@ std::ostream& operator<< (std::ostream& out,
     out << "AHO_CORASICK";
   } else if (algorithm == algorithm::SHIFT_OR) {
     out << "SHIFT_OR";
+  } else if (algorithm == algorithm::SHIFT_OR_64) {
+    out << "SHIFT_OR_64";
   } else if (algorithm == algorithm::UKKONEN) {
     out << "UKKONEN";
   } else if (algorithm == algorithm::NAIVE) {
@@ -90,6 +92,8 @@ std::ostream& operator<< (std::ostream& out,
     out << "SELLERS";
   } else if (algorithm == algorithm::WU_MANBER) {
     out << "WU_MANBER";
+  } else if (algorithm == algorithm::WU_MANBER_64) {
+    out << "WU_MANBER_64";
   }
   return out;
 }

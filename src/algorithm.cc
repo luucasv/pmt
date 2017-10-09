@@ -26,8 +26,10 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "util.h"
 #include "naive.h"
 #include "shift_or.h"
+#include "shift_or_64.h"
 #include "sellers.h"
 #include "wu_manber.h"
+#include "wu_manber_64.h"
 #include "wu_manber_naive.h"
 
 namespace algorithm {
@@ -40,6 +42,8 @@ AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name) {
     return AHO_CORASICK;
   } else if (algorithm_name == "shift_or") {
     return SHIFT_OR;
+  } else if (algorithm_name == "shift_or_64") {
+    return SHIFT_OR_64;
   } else if (algorithm_name == "ukkonen") {
     return UKKONEN;
   } else if (algorithm_name == "naive") {
@@ -48,13 +52,16 @@ AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name) {
     return SELLERS;
   } else if (algorithm_name == "wu_manber") {
     return WU_MANBER;
+  } else if (algorithm_name == "wu_manber_64") {
+    return WU_MANBER_64;
   } else {
     return NO_ALGORITHM;
   }
 }
 
 bool IsAproximatedMatchAlgorithm(AlgorithmEnum algorithm) {
-  return algorithm == WU_MANBER || algorithm == SELLERS || algorithm == UKKONEN;
+  return algorithm == WU_MANBER    || algorithm == SELLERS ||
+         algorithm == WU_MANBER_64 || algorithm == UKKONEN;
 }
 
 Algorithm* GetAlgorithm(
@@ -66,10 +73,14 @@ Algorithm* GetAlgorithm(
     return new naive::Naive(patterns);
   } else if (algorithm == SHIFT_OR) {
     return new shift_or::ShiftOr(patterns);
+  } else if (algorithm == SHIFT_OR_64) {
+    return new shift_or_64::ShiftOr64(patterns);
   } else if (algorithm == SELLERS) {
     return new sellers::Sellers(patterns, max_error);
   } else if (algorithm == WU_MANBER) {
     return new wu_manber::WuManber(patterns, max_error);
+  } else if (algorithm == WU_MANBER_64) {
+    return new wu_manber_64::WuManber64(patterns, max_error);
   } else {
     return nullptr;
   }

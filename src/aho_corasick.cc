@@ -43,10 +43,39 @@ void AhoCorasick::InsertPattern(const string &pattern) {
   this->trie[cur].occurences++;
 }
 
+void AhoCorasick::SetFailure() {
+  std::queue<size_t> state_queue;
+  for (unsigned char ch = 0; ch < SIGMA_SIZE; ch++) {
+    if (trie[0].children[ch] != -1) {
+      state_queue.push(trie[0].children[ch]);
+      trie[trie[0].children[ch]].fail = 0;
+    } else {
+      trie[0].children[ch] = 0;
+    }
+  }
+  while(!state_queue.empty()) {
+    size_t state = state_queue.front();
+    state_queue.pop();
+
+    for (unsigned char ch = 0; ch < SIGMA_SIZE; ch++) {
+      size_t fail = trie[trie[state].fail].children[ch];
+      if (trie[state].children[ch] != -1) {
+        size_t next_state = trie[state].children[ch];
+        state_queue.push(next_state);
+        trie[next_state].fail = fail;
+        trie[next_state].occurences += trie[fail].occurences;
+      } else {
+        trie[state].children[ch] = fail;
+      }
+    }
+  }
+}
+
 void AhoCorasick::BuildTrie() {
   for (const string &pattern : this->patterns_) {
     this->InsertPattern(pattern);
   }
+  this->SetFailure();
 }
 
 AhoCorasick::AhoCorasick(const vector<string> &patterns) {

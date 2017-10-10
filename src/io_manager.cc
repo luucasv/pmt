@@ -58,7 +58,7 @@ void ProcessFiles(
     algorithm::Algorithm *search_algorithm,
     const std::vector<std::string> &file_names,
     bool count_flag) {
-
+  
   for (const std::string &file_name : file_names) {
     ProcessFile(search_algorithm, file_name, count_flag);
   }

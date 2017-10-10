@@ -36,9 +36,11 @@ const size_t SIGMA_SIZE = 256;
 class AhoCorasick : public algorithm::Algorithm {
  public:
   AhoCorasick(const std::vector<std::string> &patterns);
-  ~AhoCorasick();
   int Search(const std::string &text) const;
  private:
+  void InsertPattern(const std::string &pattern);
+  void SetFailure();
+  void BuildTrie();
   struct Node;
   std::vector<Node> trie;
 };
@@ -47,12 +49,8 @@ struct AhoCorasick::Node {
   size_t children[SIGMA_SIZE];
   size_t occurences;
   size_t fail;
-  Node() {
-    fail = 0;
-    occurences = 0;
-    memset(children, -1, sizeof children);
-  }
-}
+  Node();
+};
 
 }  // namespace aho_corasick
 

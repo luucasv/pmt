@@ -22,6 +22,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include <stdlib.h>
 
+#include <queue>
 #include <vector>
 #include <string>
 
@@ -29,6 +30,12 @@ using std::string;
 using std::vector;
 
 namespace aho_corasick {
+
+AhoCorasick::Node::Node() {
+  this->fail = 0;
+  this->occurences = 0;
+  memset(this->children, -1, sizeof this->children);
+}
 
 void AhoCorasick::InsertPattern(const string &pattern) {
   size_t cur = 0;
@@ -45,7 +52,7 @@ void AhoCorasick::InsertPattern(const string &pattern) {
 
 void AhoCorasick::SetFailure() {
   std::queue<size_t> state_queue;
-  for (unsigned char ch = 0; ch < SIGMA_SIZE; ch++) {
+  for (size_t ch = 0; ch < SIGMA_SIZE; ch++) {
     if (trie[0].children[ch] != -1) {
       state_queue.push(trie[0].children[ch]);
       trie[trie[0].children[ch]].fail = 0;
@@ -56,8 +63,7 @@ void AhoCorasick::SetFailure() {
   while(!state_queue.empty()) {
     size_t state = state_queue.front();
     state_queue.pop();
-
-    for (unsigned char ch = 0; ch < SIGMA_SIZE; ch++) {
+    for (size_t ch = 0; ch < SIGMA_SIZE; ch++) {
       size_t fail = trie[trie[state].fail].children[ch];
       if (trie[state].children[ch] != -1) {
         size_t next_state = trie[state].children[ch];
@@ -75,12 +81,24 @@ void AhoCorasick::BuildTrie() {
   for (const string &pattern : this->patterns_) {
     this->InsertPattern(pattern);
   }
-  this->SetFailure();
 }
 
 AhoCorasick::AhoCorasick(const vector<string> &patterns) {
   this->patterns_ = patterns;
+  this->trie.assign(1, Node());
   this->BuildTrie();
+  this->SetFailure();
+}
+
+int AhoCorasick::Search(const string &text) const {
+  size_t cur_state = 0;
+  int count = this->trie[cur_state].occurences;
+  for (size_t i = 0; i < text.size(); i++) {
+    const unsigned char ch = static_cast<unsigned char>(text[i]);
+    cur_state = this->trie[cur_state].children[ch];
+    count += this->trie[cur_state].occurences;
+  }
+  return count;
 }
 
 }  // aho_corasick

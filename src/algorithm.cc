@@ -20,6 +20,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include "algorithm.h"
 
+#include <iostream>
 #include <string>
 
 #include "algorithm_base.h"
@@ -31,6 +32,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "wu_manber.h"
 #include "wu_manber_64.h"
 #include "wu_manber_naive.h"
+#include "aho_corasick.h"
 
 namespace algorithm {
 
@@ -81,6 +83,8 @@ Algorithm* GetAlgorithm(
     return new wu_manber::WuManber(patterns, max_error);
   } else if (algorithm == WU_MANBER_64) {
     return new wu_manber_64::WuManber64(patterns, max_error);
+  } else if (algorithm == AHO_CORASICK) {
+    return new aho_corasick::AhoCorasick(patterns);
   } else {
     return nullptr;
   }

@@ -42,7 +42,7 @@ void AhoCorasick::InsertPattern(const string &pattern) {
   for (const char ch : pattern) {
     const unsigned char uch = ch;
     if (this->trie[cur].children[uch] == -1) {
-      this->trie[cur].children[uch] = this->trie.size();
+      this->trie[cur].children[uch] = static_cast<int>(this->trie.size());
       this->trie.emplace_back();
     }
     cur = this->trie[cur].children[uch];
@@ -51,7 +51,7 @@ void AhoCorasick::InsertPattern(const string &pattern) {
 }
 
 void AhoCorasick::SetFailure() {
-  std::queue<size_t> state_queue;
+  std::queue<int> state_queue;
   for (size_t ch = 0; ch < SIGMA_SIZE; ch++) {
     if (trie[0].children[ch] != -1) {
       state_queue.push(trie[0].children[ch]);
@@ -60,13 +60,13 @@ void AhoCorasick::SetFailure() {
       trie[0].children[ch] = 0;
     }
   }
-  while(!state_queue.empty()) {
-    size_t state = state_queue.front();
+  while (!state_queue.empty()) {
+    int state = state_queue.front();
     state_queue.pop();
     for (size_t ch = 0; ch < SIGMA_SIZE; ch++) {
-      size_t fail = trie[trie[state].fail].children[ch];
+      int fail = trie[trie[state].fail].children[ch];
       if (trie[state].children[ch] != -1) {
-        size_t next_state = trie[state].children[ch];
+        int next_state = trie[state].children[ch];
         state_queue.push(next_state);
         trie[next_state].fail = fail;
         trie[next_state].occurences += trie[fail].occurences;
@@ -101,4 +101,4 @@ int AhoCorasick::Search(const string &text) const {
   return count;
 }
 
-}  // aho_corasick
+}  // namespace aho_corasick

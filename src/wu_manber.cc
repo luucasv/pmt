@@ -64,19 +64,20 @@ int WuManber::Search(const string &text) const {
       dp[1][0] = dp[0][0];
       dp[1][0] <<= 1;
       dp[1][0] |= this->pattern_masks_[p][(unsigned char) text[i]];
-      for(size_t j = 1; j <= this->max_error_; j++) {
+      for (size_t j = 1; j <= this->max_error_; j++) {
         dp[1][j] = dp[0][j - 1];
         dp[1][j] &= (dp[0][j - 1] << 1);
         dp[1][j] &= (dp[1][j - 1] << 1);
-        dp[1][j] &= ((dp[0][j] << 1) | this->pattern_masks_[p][(unsigned char) text[i]]);
+        unsigned char cur_ch = static_cast<unsigned char>(text[i]);
+        dp[1][j] &= ((dp[0][j] << 1) | this->pattern_masks_[p][cur_ch]);
       }
-      if(!dp[1][this->max_error_].at(pattern_length - 1)) {
+      if (!dp[1][this->max_error_].at(pattern_length - 1)) {
         count++;
       }
       dp[1].swap(dp[0]);
     }
   }
-  return count; 
+  return count;
 }
 
-}  // namespace wu_mamber
+}  // namespace wu_manber

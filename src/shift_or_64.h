@@ -29,11 +29,11 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "algorithm_base.h"
 
 namespace shift_or_64 {
-  
+
 class ShiftOr64 : public algorithm::Algorithm {
  public:
   ShiftOr64(const std::vector<std::string> &patterns);
-  int Search(const std::string &text) const ;
+  int Search(const std::string &text) const;
  private:
   std::vector<std::vector<uint_fast64_t>> pattern_masks_;
   std::vector<size_t> lengths_;

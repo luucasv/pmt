@@ -36,7 +36,7 @@ std::pair<bool, int> StringToInt(const char *str) {
 }
 
 void StringToLower(std::string *str) {
-  std::transform((*str).begin(), (*str).end(), (*str).begin(), ::tolower); 
+  std::transform((*str).begin(), (*str).end(), (*str).begin(), ::tolower);
 }
 
 }  // namespace util

@@ -29,11 +29,11 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "algorithm_base.h"
 
 namespace wu_manber {
-  
+
 class WuManber : public algorithm::Algorithm {
  public:
   WuManber(const std::vector<std::string> &patterns, size_t max_error);
-  int Search(const std::string &text) const ;
+  int Search(const std::string &text) const;
  private:
   std::vector<std::vector<bitset::Bitset>> pattern_masks_;
   size_t max_error_;

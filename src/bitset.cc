@@ -43,7 +43,7 @@ bool Bitset::BitsetReference::operator=(const bool value) {
 }
 
 Bitset::BitsetReference::operator bool() const {
-   return bool( ((*bucket_reference_) >> position_) & bucket_t(1) );
+  return static_cast<bool>( ((*bucket_reference_) >> position_) & bucket_t(1) );
 }
 
 // Bitset
@@ -101,7 +101,7 @@ void Bitset::set(size_t position) {
 bool Bitset::at(size_t position) const {
   size_t bucket_id = position >> NO_BITS,
   bucket_position  = position & MOD_MASK;
-  return bool((this->buckets_[bucket_id] >> bucket_position) & bucket_t(1)); 
+  return static_cast<bool>((this->buckets_[bucket_id] >> bucket_position) & 1);
 }
 
 size_t Bitset::length() const {

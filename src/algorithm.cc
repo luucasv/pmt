@@ -40,11 +40,11 @@ AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name) {
   util::StringToLower(&algorithm_name);
   if (algorithm_name == "kmp") {
     return KMP;
-  } else if (algorithm_name == "aho_corasick") {
+  } else if (algorithm_name == "aho_corasick" || algorithm_name == "aho") {
     return AHO_CORASICK;
-  } else if (algorithm_name == "shift_or") {
+  } else if (algorithm_name == "shift_or" || algorithm_name == "so") {
     return SHIFT_OR;
-  } else if (algorithm_name == "shift_or_64") {
+  } else if (algorithm_name == "shift_or_64" || algorithm_name == "so64") {
     return SHIFT_OR_64;
   } else if (algorithm_name == "ukkonen") {
     return UKKONEN;
@@ -52,9 +52,9 @@ AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name) {
     return NAIVE;
   } else if (algorithm_name == "sellers") {
     return SELLERS;
-  } else if (algorithm_name == "wu_manber") {
+  } else if (algorithm_name == "wu_manber" || algorithm_name == "wm") {
     return WU_MANBER;
-  } else if (algorithm_name == "wu_manber_64") {
+  } else if (algorithm_name == "wu_manber_64" || algorithm_name == "wm64") {
     return WU_MANBER_64;
   } else {
     return NO_ALGORITHM;

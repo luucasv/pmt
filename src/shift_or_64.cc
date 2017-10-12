@@ -68,7 +68,7 @@ int ShiftOr64::Search(const string &text) const {
       }
     }
   }
-  return count; 
+  return count;
 }
 
 }  // namespace shift_or_64

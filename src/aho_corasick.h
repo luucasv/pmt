@@ -46,9 +46,9 @@ class AhoCorasick : public algorithm::Algorithm {
 };
 
 struct AhoCorasick::Node {
-  size_t children[SIGMA_SIZE];
-  size_t occurences;
-  size_t fail;
+  int children[SIGMA_SIZE];
+  int occurences;
+  int fail;
   Node();
 };
 

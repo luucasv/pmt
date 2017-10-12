@@ -33,6 +33,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "wu_manber_64.h"
 #include "wu_manber_naive.h"
 #include "aho_corasick.h"
+#include "ukkonen.h"
 
 namespace algorithm {
 
@@ -85,6 +86,8 @@ Algorithm* GetAlgorithm(
     return new wu_manber_64::WuManber64(patterns, max_error);
   } else if (algorithm == AHO_CORASICK) {
     return new aho_corasick::AhoCorasick(patterns);
+  } else if (algorithm == UKKONEN) {
+    return new ukkonen::Ukkonen(patterns, max_error);
   } else {
     return nullptr;
   }

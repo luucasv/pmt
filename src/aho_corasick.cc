@@ -21,6 +21,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "aho_corasick.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <queue>
 #include <vector>

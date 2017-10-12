@@ -18,39 +18,48 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
             Tiago Figueiredo Gonçalves <tfg@cin.ufpe.br>
 */
 
-#ifndef SRC_AHO_CORASICK_H_
-#define SRC_AHO_CORASICK_H_
+#ifndef SRC_UKKONEN_H_
+#define SRC_UKKONEN_H_
 
-#include <stdlib.h>
+#include <stdint.h>
 
 #include <string>
 #include <vector>
 
 #include "algorithm_base.h"
 
-namespace aho_corasick {
+namespace ukkonen {
 
 const size_t SIGMA_SIZE = 256;
 
-class AhoCorasick : public algorithm::Algorithm {
+class Ukkonen : public algorithm::Algorithm {
  public:
-  AhoCorasick(const std::vector<std::string> &patterns);
+  Ukkonen(const std::vector<std::string> &patterns, int max_error);
   int Search(const std::string &text) const;
+
  private:
-  void InsertPattern(const std::string &pattern);
-  void SetFailure();
-  void BuildTrie();
-  struct Node;
-  std::vector<Node> trie;
+  void BuildFsm(int fsm_id, const std::string &pattern, const int max_error);
+  int InsertState(const std::vector<int> &state);
+  struct NodeTernaryTree;
+  struct NodeFsm;
+  std::vector<NodeTernaryTree> ternary_tree_;
+  // each vector is a fsm for a distinct pattern.
+  std::vector<std::vector<NodeFsm>> fsm_;
 };
 
-struct AhoCorasick::Node {
-  int children[SIGMA_SIZE];
-  int occurences;
-  int fail;
-  Node();
+struct Ukkonen::NodeTernaryTree {
+  int children_[3];
+  int id_;
+  int step_;
+  NodeTernaryTree();
 };
 
-}  // namespace aho_corasick
+struct Ukkonen::NodeFsm {
+  int children_[SIGMA_SIZE];
+  bool accept_;
+  NodeFsm(bool accept);
+};
 
-#endif  // SRC_AHO_CORASICK_H_
+}  // namespace ukkonen
+
+#endif  // SRC_UKKONEN_H_

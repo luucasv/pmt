@@ -31,7 +31,7 @@ class Algorithm {
  public:
   Algorithm();
   virtual ~Algorithm();
-  virtual int Search(const std::string &text) const;
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
  protected:
   std::vector<std::string> patterns_;
 };

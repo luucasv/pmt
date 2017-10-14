@@ -28,7 +28,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 namespace io_manager {
 
-inline void ProcessFile(
+void ProcessFile(
     algorithm::Algorithm *search_algorithm,
     const std::string &file_name,
     bool count_flag) {
@@ -60,7 +60,7 @@ void ProcessFiles(
     bool count_flag) {
 
   for (const std::string &file_name : file_names) {
-    ProcessFile(search_algorithm, file_name, count_flag);
+    search_algorithm->ProcessFile(file_name, count_flag);
   }
 }
 

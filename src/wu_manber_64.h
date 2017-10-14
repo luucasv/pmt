@@ -33,9 +33,10 @@ namespace wu_manber_64 {
 class WuManber64 : public algorithm::Algorithm {
  public:
   WuManber64(const std::vector<std::string> &patterns, size_t max_error);
-  int Search(const std::string &text) const;
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
 
  private:
+  int Search(const std::string &text) const;
   std::vector<std::vector<uint_fast64_t>> pattern_masks_;
   std::vector<size_t> lengths_;
   size_t max_error_;

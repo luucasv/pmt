@@ -35,10 +35,14 @@ Algorithm::Algorithm() {}
 
 Algorithm::~Algorithm() {}
 
-int Algorithm::Search(const std::string &text) const {
+void Algorithm::ProcessFile(const std::string &file_name, bool count_flag) const {
   assert(false);
-  return 0;
 }
+
+// int Algorithm::Search(const std::string &text) const {
+//   assert(false);
+//   return 0;
+// }
 
 
 }  // namespace algorithm

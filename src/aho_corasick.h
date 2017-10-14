@@ -35,8 +35,9 @@ const size_t SIGMA_SIZE = 256;
 class AhoCorasick : public algorithm::Algorithm {
  public:
   AhoCorasick(const std::vector<std::string> &patterns);
-  int Search(const std::string &text) const;
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
  private:
+  int Search(const std::string &text) const;
   void InsertPattern(const std::string &pattern);
   void SetFailure();
   void BuildTrie();

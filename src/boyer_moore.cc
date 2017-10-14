@@ -24,6 +24,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 
 using std::vector;
 using std::string;
@@ -123,7 +124,7 @@ BoyerMoore::BoyerMoore(const vector<string> &patterns) {
 }
 
 // return the number of occorencies of the patterns_ in the text
-int BoyerMoore::Search(const string &text) const {
+inline int BoyerMoore::Search(const string &text) const {
   // const int text_size = static_cast<int>(text.size());
   int count = 0;
   for (size_t i = 0; i < patterns_.size(); i++) {

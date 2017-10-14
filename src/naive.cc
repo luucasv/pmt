@@ -22,18 +22,42 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 using std::vector;
 using std::string;
 
 namespace naive {
 
+void Naive::ProcessFile(const std::string &file_name, bool count_flag) const {
+  std::ifstream text_file(file_name.c_str());
+  std::string text_line;
+  int total_count = 0, lines_count = 0;
+
+  std::cout << "\nFor " << file_name << ": \n";
+  while (getline(text_file, text_line)) {
+    int line_count = this->Search(text_line);
+    if (line_count > 0) {
+      if (count_flag) {
+        lines_count++;
+        total_count += line_count;
+      } else {
+        std::cout << text_line << '\n';
+      }
+    }
+  }
+  if (count_flag) {
+    std::cout << total_count << " occurrences in " << lines_count << " lines\n";
+  }
+}
+  
 Naive::Naive(const vector<string> &patterns) {
   this->patterns_ = patterns;
 }
 
 // return the number of occorencies of the patterns_ in the text
-int Naive::Search(const string &text) const {
+inline int Naive::Search(const string &text) const {
   const int text_size = static_cast<int>(text.size());
   int count = 0;
   for (const string &pattern : this->patterns_) {

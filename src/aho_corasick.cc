@@ -26,11 +26,35 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <queue>
 #include <vector>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 using std::string;
 using std::vector;
 
 namespace aho_corasick {
+
+void AhoCorasick::ProcessFile(const std::string &file_name, bool count_flag) const {
+  std::ifstream text_file(file_name.c_str());
+  std::string text_line;
+  int total_count = 0, lines_count = 0;
+
+  std::cout << "\nFor " << file_name << ": \n";
+  while (getline(text_file, text_line)) {
+    int line_count = this->Search(text_line);
+    if (line_count > 0) {
+      if (count_flag) {
+        lines_count++;
+        total_count += line_count;
+      } else {
+        std::cout << text_line << '\n';
+      }
+    }
+  }
+  if (count_flag) {
+    std::cout << total_count << " occurrences in " << lines_count << " lines\n";
+  }
+}
 
 AhoCorasick::Node::Node() {
   this->fail = 0;
@@ -91,7 +115,7 @@ AhoCorasick::AhoCorasick(const vector<string> &patterns) {
   this->SetFailure();
 }
 
-int AhoCorasick::Search(const string &text) const {
+inline int AhoCorasick::Search(const string &text) const {
   size_t cur_state = 0;
   int count = this->trie[cur_state].occurences;
   for (size_t i = 0; i < text.size(); i++) {

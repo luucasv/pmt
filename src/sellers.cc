@@ -22,6 +22,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 #include "algorithm_base.h"
 
@@ -29,6 +31,28 @@ using std::string;
 using std::vector;
 
 namespace sellers {
+
+void Sellers::ProcessFile(const std::string &file_name, bool count_flag) const {
+  std::ifstream text_file(file_name.c_str());
+  std::string text_line;
+  int total_count = 0, lines_count = 0;
+
+  std::cout << "\nFor " << file_name << ": \n";
+  while (getline(text_file, text_line)) {
+    int line_count = this->Search(text_line);
+    if (line_count > 0) {
+      if (count_flag) {
+        lines_count++;
+        total_count += line_count;
+      } else {
+        std::cout << text_line << '\n';
+      }
+    }
+  }
+  if (count_flag) {
+    std::cout << total_count << " occurrences in " << lines_count << " lines\n";
+  }
+}
 
 Sellers::Sellers(const vector<string> &patterns, int max_error) {
   this->patterns_ = patterns;
@@ -39,7 +63,7 @@ Sellers::Sellers(const vector<string> &patterns, int max_error) {
   }
 }
 
-int Sellers::Search(const string &text) const {
+inline int Sellers::Search(const string &text) const {
   static vector<vector<int>> memo(2, vector<int>(this->max_pattern_size_ + 1, 0));
   int count = 0;
   for (const string &pattern : this->patterns_) {

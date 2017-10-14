@@ -33,8 +33,9 @@ namespace sellers {
 class Sellers : public algorithm::Algorithm {
  public:
   Sellers(const std::vector<std::string> &patterns, int max_error);
-  int Search(const std::string &text) const;
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
  private:
+  int Search(const std::string &text) const;
   int max_error_;
   size_t max_pattern_size_;
 };

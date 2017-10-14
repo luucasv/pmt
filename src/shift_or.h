@@ -33,8 +33,9 @@ namespace shift_or {
 class ShiftOr : public algorithm::Algorithm {
  public:
   ShiftOr(const std::vector<std::string> &patterns);
-  int Search(const std::string &text) const ;
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
  private:
+  int Search(const std::string &text) const ;
   std::vector<std::vector<bitset::Bitset>> pattern_masks_;
 };
 

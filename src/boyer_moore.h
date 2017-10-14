@@ -33,6 +33,7 @@ class BoyerMoore : public algorithm::Algorithm {
   BoyerMoore(const std::vector<std::string> &patterns);
   void ProcessFile(const std::string &file_name, bool count_flag) const;
  private:
+  int Search(const std::string &text) const;
   std::vector<std::string> patterns_;
   std::vector<std::vector<int>> bad_char_, good_suffix_;
 };

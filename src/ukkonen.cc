@@ -26,6 +26,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <vector>
 #include <string>
 #include <queue>
+#include <iostream>
+#include <fstream>
 
 using std::queue;
 using std::vector;
@@ -40,6 +42,28 @@ Ukkonen::NodeTernaryTree::NodeTernaryTree() {
 
 Ukkonen::NodeFsm::NodeFsm(bool accept) {
   this->accept_ = accept;
+}
+
+void Ukkonen::ProcessFile(const std::string &file_name, bool count_flag) const {
+  std::ifstream text_file(file_name.c_str());
+  std::string text_line;
+  int total_count = 0, lines_count = 0;
+
+  std::cout << "\nFor " << file_name << ": \n";
+  while (getline(text_file, text_line)) {
+    int line_count = this->Search(text_line);
+    if (line_count > 0) {
+      if (count_flag) {
+        lines_count++;
+        total_count += line_count;
+      } else {
+        std::cout << text_line << '\n';
+      }
+    }
+  }
+  if (count_flag) {
+    std::cout << total_count << " occurrences in " << lines_count << " lines\n";
+  }
 }
 
 Ukkonen::Ukkonen(const vector<string> &patterns, int max_error) {
@@ -110,7 +134,7 @@ int Ukkonen::InsertState(const vector<int> &state) {
   return cur;
 }
 
-int Ukkonen::Search(const string &text) const {
+inline int Ukkonen::Search(const string &text) const {
   int count = 0;
   for (size_t fsm_id = 0; fsm_id < this->fsm_.size(); fsm_id++) {
     int cur_state = 0;  

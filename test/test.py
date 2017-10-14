@@ -17,23 +17,26 @@ def main():
     ('naive',   False),
     ('kmp',     False),
     ('aho',     False),
-    ('so64',      False),
+    ('so64',    False),
     ('bm',      False),
     ('sellers', True),
     ('ukkonen', True),
-    ('wm64',      True)
+    ('wm64',    True)
   ]
   tests = [
     ('data/blue', 'data/english', 0),
     ('data/blue', 'data/english', 1),
     ('data/blue', 'data/english', 2),
-    ('data/blue', 'data/english', 3),
-    ('data/blue', 'data/english', 4),
     ('data/marshmallow', 'data/english', 0),
     ('data/marshmallow', 'data/english', 1),
     ('data/marshmallow', 'data/english', 2),
-    ('data/marshmallow', 'data/english', 3),
-    ('data/marshmallow', 'data/english', 4)
+    ('data/church', 'data/english', 0),
+    ('data/church', 'data/english', 1),
+    ('data/church', 'data/english', 2),
+    ('data/A', 'data/dna', 0),
+    ('data/A50', 'data/dna', 0),
+    ('data/A50', 'data/dna', 1),
+    ('data/A50', 'data/dna', 2),
   ]
 
   for pat, txt, err in tests:

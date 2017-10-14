@@ -35,9 +35,10 @@ const size_t SIGMA_SIZE = 256;
 class Ukkonen : public algorithm::Algorithm {
  public:
   Ukkonen(const std::vector<std::string> &patterns, int max_error);
-  int Search(const std::string &text) const;
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
 
  private:
+  int Search(const std::string &text) const;
   void BuildFsm(int fsm_id, const std::string &pattern, const int max_error);
   int InsertState(const std::vector<int> &state);
   struct NodeTernaryTree;

@@ -31,6 +31,9 @@ namespace naive {
 class Naive : public algorithm::Algorithm {
  public:
   Naive(const std::vector<std::string> &patterns);
+  void ProcessFile(const std::string &file_name, bool count_flag) const;
+
+ private:
   int Search(const std::string &text) const;
 };
 

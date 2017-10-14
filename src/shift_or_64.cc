@@ -24,6 +24,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 
 #include <vector>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 using std::vector;
 using std::string;
@@ -31,6 +33,28 @@ using std::string;
 const size_t SIGMA_SIZE = 500;
 
 namespace shift_or_64 {
+
+void ShiftOr64::ProcessFile(const std::string &file_name, bool count_flag) const {
+  std::ifstream text_file(file_name.c_str());
+  std::string text_line;
+  int total_count = 0, lines_count = 0;
+
+  std::cout << "\nFor " << file_name << ": \n";
+  while (getline(text_file, text_line)) {
+    int line_count = this->Search(text_line);
+    if (line_count > 0) {
+      if (count_flag) {
+        lines_count++;
+        total_count += line_count;
+      } else {
+        std::cout << text_line << '\n';
+      }
+    }
+  }
+  if (count_flag) {
+    std::cout << total_count << " occurrences in " << lines_count << " lines\n";
+  }
+}
 
 vector<uint_fast64_t> BuildPatternMask(const string &pattern) {
   vector<uint_fast64_t> masks(SIGMA_SIZE, ~(uint_fast64_t(0)));
@@ -54,7 +78,7 @@ ShiftOr64::ShiftOr64(const vector<string> &patterns) {
   }
 }
 
-int ShiftOr64::Search(const string &text) const {
+inline int ShiftOr64::Search(const string &text) const {
   int count = 0;
   for (size_t p = 0; p < this->pattern_masks_.size(); p++) {
     size_t pattern_length = this->lengths_[p];

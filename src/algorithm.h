@@ -40,6 +40,7 @@ enum AlgorithmEnum {
   UKKONEN,
   WU_MANBER,
   WU_MANBER_64,
+  BOYER_MOORE,
   NO_ALGORITHM
 };
 

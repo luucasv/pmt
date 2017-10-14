@@ -94,6 +94,8 @@ std::ostream& operator<< (std::ostream& out,
     out << "WU_MANBER";
   } else if (algorithm == algorithm::WU_MANBER_64) {
     out << "WU_MANBER_64";
+  } else if (algorithm == algorithm::BOYER_MOORE) {
+    out << "BOYER_MOORE";
   }
   return out;
 }

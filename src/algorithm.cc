@@ -34,6 +34,8 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include "wu_manber_naive.h"
 #include "aho_corasick.h"
 #include "ukkonen.h"
+#include "kmp.h"
+#include "boyer_moore.h"
 
 namespace algorithm {
 
@@ -57,6 +59,8 @@ AlgorithmEnum GetAlgorithmEnum(std::string algorithm_name) {
     return WU_MANBER;
   } else if (algorithm_name == "wu_manber_64" || algorithm_name == "wm64") {
     return WU_MANBER_64;
+  } else if (algorithm_name == "boyer_moore" || algorithm_name == "bm") {
+    return BOYER_MOORE;
   } else {
     return NO_ALGORITHM;
   }
@@ -88,6 +92,10 @@ Algorithm* GetAlgorithm(
     return new aho_corasick::AhoCorasick(patterns);
   } else if (algorithm == UKKONEN) {
     return new ukkonen::Ukkonen(patterns, max_error);
+  } else if (algorithm == KMP) {
+    return new kmp::KMP(patterns);
+  } else if (algorithm == BOYER_MOORE) {
+    return new boyer_moore::BoyerMoore(patterns);
   } else {
     return nullptr;
   }

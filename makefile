@@ -1,7 +1,7 @@
 CXX=g++
 RM=rm -f
 MK=mkdir -p
-CPPFLAGS=-std=c++11 -O2 -Wall -Werror -Wconversion -flto
+CPPFLAGS=-std=c++11 -O2  -Wall -Werror -Wconversion -flto
 LDLIB=-lm -flto -O2
 
 OUTPUTDIR=bin

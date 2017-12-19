@@ -8,43 +8,160 @@ def getTime(cmd):
   elapsed = end_time - start_time
   return elapsed
 
-def runTest(pattern_file, text_file, max_error, algorithm):
-  return getTime('./bin/pmt -p {} {} -c -e {} -a {} > /dev/null'.format(
-      pattern_file, text_file, max_error, algorithm))
+def runPattern(pattern, text_file, max_error, algorithm):
+  return getTime('./bin/pmt "{}" {} -c -e {} -a {} > /dev/null'.format(
+      pattern, text_file, max_error, algorithm))
+
+def runGrep(pattern, text_file):
+  return getTime('grep -c "{}" {} > /dev/null'.format(pattern, text_file))
+
+text_files = [
+  'dna'
+]
+
+patterns = {}
+
+from os import system
+from timeit import time
+
+def getTime(cmd):
+  start_time = time.time()
+  system(cmd)
+  end_time = time.time()
+  elapsed = end_time - start_time
+  return elapsed
+
+def runPattern(pattern, text_file, max_error, algorithm):
+  return getTime('timeout 50s ./bin/pmt "{}" {} -c -e {} > /dev/null'.format(
+      pattern, text_file, max_error))
+
+def runPatternFile(pattern, text_file, max_error, algorithm):
+  return getTime('timeout 150s ./bin/pmt -p "{}" {} -c -e {} -a {} > /dev/null'.format(
+      pattern, text_file, max_error, algorithm))
+
+def runGrep(pattern, text_file):
+  return getTime('grep -c "{}" {} > /dev/null'.format(pattern, text_file))
+
+def runGrepFile(pattern, text_file):
+  return getTime('grep -c -e {} {} > /dev/null'.format(' -e '.join(pattern), text_file))
+
+text_files = [
+  'english'
+]
+
+patterns = {}
+
+patterns['english'] = [
+  'I',
+  'blue',
+  'hello',
+  'church',
+  'thinking',
+  'specially',
+  'engagement',
+  'marshmallow',
+  'exaggeration',
+  'thunderstruck',
+  'I haven\'t got',
+  'And I tried it',
+  'O King of the Age',
+  'light and darkness'
+  'a three hundred and',
+  'The journey to Chester',
+  'pen pineapple apple pen',
+  'making these observations',
+  'four quarters of the globe',
+  'from the Russian proletariat',
+]
+
+patterns['dna'] = [
+  'A',
+  'T',
+  'CC',
+  'GA',
+  'GC',
+  'GTAA',
+  'CCAC',
+  'CCTCTT',
+  'GAATATGT',
+  'TTTCGACT',
+  'TAAAAAGCTC',
+  'GGTTAGGCAG',
+  'AGTAAACGTC',
+  'CGGGGAAGTCGT',
+  'GATGTCCACTTG',
+  'CTGCAGTACAGCTG',
+  'ACTTAAGGACGTAT',
+  'CTCGGAGAAGAAGC',
+  'CACCTCTCGTAATGGA',
+  'TAGCTCTTACATGTTGGGATTA',
+  'CTTGAGACGCCAGCCTTGATGACG'
+]
+
+
+
+algo_types = ['exact']
+
+algos = {}
+
+algos['exact'] = [
+  'grep',
+  ''
+]
+
+algos['aprox'] = [
+  'sellers',
+  'ukkonen'
+]
 
 def main():
-  algos = [
-    ('naive',   False),
-    ('kmp',     False),
-    ('aho',     False),
-    ('so64',    False),
-    ('bm',      False),
-    ('sellers', True),
-    ('ukkonen', True),
-    ('wm64',    True)
-  ]
-  tests = [
-    ('data/blue', 'data/english', 0),
-    ('data/blue', 'data/english', 1),
-    ('data/blue', 'data/english', 2),
-    ('data/marshmallow', 'data/english', 0),
-    ('data/marshmallow', 'data/english', 1),
-    ('data/marshmallow', 'data/english', 2),
-    ('data/church', 'data/english', 0),
-    ('data/church', 'data/english', 1),
-    ('data/church', 'data/english', 2),
-    ('data/A', 'data/dna', 0),
-    ('data/A50', 'data/dna', 0),
-    ('data/A50', 'data/dna', 1),
-    ('data/A50', 'data/dna', 2),
-  ]
+  
+  base = '../pmt/data/'
+  system('make')
+  for alg_type in algo_types:
+    for txt in text_files:
+      for pat in patterns[txt]:
+        if alg_type == 'exact':
+          errors = [0]
+        else:
+          errors = [1, len(pat)-1]
+        for alg in algos[alg_type]:
+          for err in errors:
+            time = 0.0
+            no_repetitions = 3
+            for _ in range(no_repetitions):
+              if alg != 'grep':
+                time += runPattern(pat, base + txt, err, alg)
+              else:
+                time += runGrep(pat, base + txt)
+            time /= no_repetitions
+            print('{:30} {:5} {:5} {:10} {:5.4f}'.format(alg_type + '_' + txt + ('1' if err < 2 else 'M'), len(pat), err, alg, time))
 
-  for pat, txt, err in tests:
-    for alg, app in algos:
-      if not app and err > 0: continue
-      time = runTest(pat, txt, err, alg)
-      result = (pat, txt, err, alg, time)
-      print('{:30} {:30} {:5} {:10} {:5.4f}'.format(pat, txt, err, alg, time))
 
-if __name__ == "__main__":
-    main()
+  # Multiple patterns
+  # alg_type = 'exact'
+  # for txt in text_files:
+  #   for pat_lim in range(len(patterns[txt])):
+  #     if pat_lim % 4 != 1: continue
+  #     pat = patterns[txt][:pat_lim]
+      
+  #     pat_file = base + 'pat_tmp'
+  #     with open(pat_file, 'w') as f:
+  #       for p in pat:
+  #         print(p, file = f)
+
+  #     errors = [0]
+  #     for alg in algos[alg_type]:
+  #       for err in errors:
+  #         time = 0.0
+  #         no_repetitions = 3
+  #         for _ in range(no_repetitions):
+  #           if alg != 'grep':
+  #             time += runPatternFile(pat_file, base + txt, err, alg)
+  #           else:
+  #             time += runGrepFile(pat, base + txt)
+  #         time /= no_repetitions
+  #         print('{:30} {:5} {:5} {:10} {:5.4f}'.format('multiple' + '_' + txt + ('1' if err < 2 else 'M'), len(pat), err, alg, time))
+
+if __name__ == '__main__':
+  main()

@@ -81,6 +81,9 @@ inline int WuManber::Search(const string &text) const {
     size_t pattern_length = this->pattern_masks_[p][0].length();
     vector<Bitset> dp[2];
     dp[0].assign(this->max_error_ + 1, Bitset(pattern_length, true));
+    for (size_t i = 1; i < this->max_error_; i++) {
+      dp[0][i] = dp[0][i - 1] << 1;
+    }
     dp[1] = dp[0];
     for (size_t i = 0; i < text.length(); i++) {
       dp[1][0] = dp[0][0];

@@ -33,6 +33,7 @@ namespace algorithm {
 enum AlgorithmEnum {
   NAIVE,
   KMP,
+  BOYER_MOORE,
   SHIFT_OR,
   SHIFT_OR_64,
   AHO_CORASICK,
@@ -40,7 +41,6 @@ enum AlgorithmEnum {
   UKKONEN,
   WU_MANBER,
   WU_MANBER_64,
-  BOYER_MOORE,
   NO_ALGORITHM
 };
 

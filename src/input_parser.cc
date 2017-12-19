@@ -30,6 +30,7 @@ Written by: Lucas V. da C. Santana <lvcs@cin.ufpe.br>
 #include <tuple>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "resources.h"
 #include "algorithm.h"
@@ -260,11 +261,25 @@ InputArguments ParseArgs(int argc, char * const*argv) {
   // ======================= setting default algorithms ====================
   if (args.algorithm == algorithm::NO_ALGORITHM) {
     if (args.max_error > 0) {
-      args.algorithm = algorithm::UKKONEN;
+      size_t max_len = 0;
+      for (const string &pattern : args.patterns) {
+        max_len = std::max(max_len, pattern.size());
+      }
+      if (max_len <= 15 || (max_len <= 05 && args.max_error <= 4)) {
+        args.algorithm = algorithm::UKKONEN;
+      } else if (max_len < 64) {
+        args.algorithm = algorithm::WU_MANBER_64;
+      } else {
+        args.algorithm = algorithm::SELLERS;
+      }
     } else if (args.patterns.size() > 1) {
       args.algorithm = algorithm::AHO_CORASICK;
     } else {
-      args.algorithm = algorithm::KMP;
+      if (args.patterns[0].size() < 64) {
+        args.algorithm = algorithm::SHIFT_OR_64;
+      } else {
+        args.algorithm = algorithm::BOYER_MOORE;
+      }
     }
   } else if (args.max_error > 0) {
     if (!algorithm::IsAproximatedMatchAlgorithm(args.algorithm)) {
